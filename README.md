@@ -12,7 +12,7 @@ processing algorithms by comparing audio files but now
 it is extended to many other kind of files, like plain
 text and xml. Other formats can be added by extensions.
 
-Why back to back testing
+Why back-to-back testing
 ------------------------
 
 A Back-to-back tests is a black box tests that just compares
@@ -26,17 +26,23 @@ back-to-back tests and then proceeding with the
 refactoring with a larger level of confidence than having
 no test at all.
 
-*Warning: being a black box text, it is likely that,
-by doing a intended refectoring you are actually
-changing behaviour that is not covered by the
-back2back tests.*
+**Note of warning:**
+Don't feel too confident by being backed by back2back tests.
+It is black-box testing, so it is hard to ensure full coverage.
+You may be changing a behaviour which is not exercised
+by the b2b test, and not noticing.
 
-Why this tool is useful
------------------------
 
-If b2b are hard to run and maintain, they will get old
-and useless. This script automates the back2back
-testing definition and management.
+How this tool helps
+-------------------
+
+If b2b tests are hard to run and maintain,
+they will get old and useless.
+This script automates most tedious back2back
+related task such as setting up, verifying results,
+accepting changes, clearing data...
+
+Features:
 * It is auto-checked, like most Xunit frameworks
 * It automagically manages the expectation data
 * On failure, it generates handy data to evaluate
@@ -62,7 +68,6 @@ For each test you want to run, you need to define:
 Just like in this b2b script:
 
 	#!/usr/bin/python
-	# Name me 'back2back', for instance
 	import sys
 	from audiob2b import runBack2BackProgram
 
@@ -85,10 +90,11 @@ Just like in this b2b script:
 Save this file as `back2back`, for example, and make it executable.
 
 To run the tests call this script without parameters.
-    ./back2back
+
+	./back2back
 
 Failed cases will generate `*_result.wav` and `*_diff.wav`
-files for each missmatching output, containing the
+files for each mismatching output, containing the
 obtained output and the difference with the expected one.
 
 If some test fail but you want to accept the new results
@@ -107,10 +113,28 @@ To accept any failing cases (USE IT WITH CARE) call:
 	./back2back --acceptall
 
 To accept some results but just for a given architecture,
-due to floating point missmatches, use:
+due to floating point mismatches, use:
 
 	./back2back --arch --accept case1 case2
 
+
+Extra advices
+-------------
+
+Put your tests under a continuous integration system.
+* BuildBot
+* TestFarm
+* CDash
+If your might be lazy passing tests but bots aren't.
+Connect your bots to your VCS so they test for every commit.
+
+If one b2b test gets red, don't keep it for long,
+either accept it or roll-back your code.
+b2b detect changes, but if you are in a change
+you won't notice whether a second one happens.
+If your expectation data is backed by a version 
+control system dare to accept wrong expectation data
+until you fix it. But don't forget.
 
 
 

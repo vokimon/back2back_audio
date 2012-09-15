@@ -31,11 +31,16 @@ by doing a intended refectoring you are actually
 changing behaviour that is not covered by the
 back2back tests.*
 
+Why this tool is useful
+-----------------------
+
 If b2b are hard to run and maintain, they will get old
-and useless. That's where this script is useful.
+and useless. This script automates the back2back
+testing definition and management.
 * It is auto-checked, like most Xunit frameworks
-* It automagically manage the expectation data
-* On failure it generates proper diffs and keeps the
+* It automagically manages the expectation data
+* On failure, it generates handy data to evaluate
+	the changes by providing diffs and keeping
 	failed and expected data for reference.
 * Provides a handy command line to accept failed 
   results as proper ones.
@@ -77,7 +82,7 @@ Just like in this b2b script:
 		]
 	runBack2BackProgram(data_path, sys.argv, back2BackTests)
 
-Save this file, for example as 'back2back' and make it executable.
+Save this file as `back2back`, for example, and make it executable.
 
 To run the tests call this script without parameters.
     ./back2back
@@ -88,18 +93,23 @@ obtained output and the difference with the expected one.
 
 If some test fail but you want to accept the new results
 just call:
-    ./back2back --accept case1 case2
-where case1 and case2 are the cases to be accepted.
+
+	./back2back --accept case1 case2
+
+where `case1` and `case2` are the cases to be accepted.
 
 To know which are the available cases:
-    ./back2back --list
+
+	./back2back --list
 
 To accept any failing cases (USE IT WITH CARE) call:
-    ./back2back --acceptall
+
+	./back2back --acceptall
 
 To accept some results but just for a given architecture,
 due to floating point missmatches, use:
-    ./back2back --arch --accept case1 case2
+
+	./back2back --arch --accept case1 case2
 
 
 

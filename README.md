@@ -16,16 +16,22 @@ Why back to back testing
 ------------------------
 
 A Back-to-back tests is a black box tests that just compares
-that given an input you have the same output all the time.
+that, given an input, you have the same output all the time.
 Unit testing and Test Driven Development are a quite more
 preferable strategy to test a piece of software.
 But often we need to change a piece of software which has
 been developed without proper testing.
 A quick way to get control over it is setting up a set of
 back-to-back tests and then proceeding with the
-refactoring with a larger level of confidence.
+refactoring with a larger level of confidence than having
+no test at all.
 
-But if b2b are hard to run and maintain, they will get old
+*Warning: being a black box text, it is likely that,
+by doing a intended refectoring you are actually
+changing behaviour that is not covered by the
+back2back tests.*
+
+If b2b are hard to run and maintain, they will get old
 and useless. That's where this script is useful.
 * It is auto-checked, like most Xunit frameworks
 * It automagically manage the expectation data
@@ -50,26 +56,26 @@ For each test you want to run, you need to define:
 
 Just like in this b2b script:
 
-		#!/usr/bin/python
-		# Name me 'back2back', for instance
-		import sys
-		from audiob2b import runBack2BackProgram
+	#!/usr/bin/python
+	# Name me 'back2back', for instance
+	import sys
+	from audiob2b import runBack2BackProgram
 
-		data_path="path/to/b2bdata"
-		back2BackTests = [
-			("myprogram_with_option",
-					"./myprogram --option input1.wav input2.wav output.wav otheroutput.wav ",
-					[
-							output.wav",
-							"otheroutput.wav",
-	        ]),
-			("myprogram_with_other_option",
-					"./myprogram --other-option input1.wav input2.wav output.wav ignoredoutput.wav ",
-					[
-						"output.wav",
-					]),
-			]
-		runBack2BackProgram(data_path, sys.argv, back2BackTests)
+	data_path="path/to/b2bdata"
+	back2BackTests = [
+		("myprogram_with_option",
+				"./myprogram --option input1.wav input2.wav output.wav otheroutput.wav ",
+				[
+					"output.wav",
+					"otheroutput.wav",
+		]),
+		("myprogram_with_other_option",
+				"./myprogram --other-option input1.wav input2.wav output.wav ignoredoutput.wav ",
+				[
+					"output.wav",
+				]),
+		]
+	runBack2BackProgram(data_path, sys.argv, back2BackTests)
 
 Save this file, for example as 'back2back' and make it executable.
 

@@ -3,14 +3,14 @@
 """
 Copyright 2012 David García Garzón
 
-This file is part of spherelab
+This file is part of back2back
 
-spherelab is free software: you can redistribute it and/or modify
+back2back is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-spherelab is distributed in the hope that it will be useful,
+back2back is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
@@ -124,6 +124,12 @@ def differences(expected, result) :
 			return errors
 
 def hopMax(channels, offset=0) :
+	"""Returns values and positions of absolute maximi
+	for each channel of a multichannel audio chunk.
+	First index of the input matrix should be the position
+	and the second index the channel.
+	If provided, offset is added to the maximum positions.
+	"""
 	abschannels = abs(channels)
 	return (
 		abschannels.max(axis=0),
@@ -131,15 +137,27 @@ def hopMax(channels, offset=0) :
 		)
 
 def mergeHopMax(old, oldpos, new, newpos) :
+	"""Updates a multichannel maximum tracking structure
+	(old, oldpos) with the new maximi (new, newpos)
+	of a new chunk of audio.
+	Updates the maximum for a channel just if the one
+	of the new chunk for that channel is greater.
+	The old structure is modified in-place and is returned
+	as well for convenience.
+	"""
 	choser = old < new
 	old[choser] = new[choser]
 	oldpos[choser] = newpos[choser]
 	return (old, oldpos)
 
 def cummulativeCompare(values, pos, diff, offset) :
+	"""Given a set of multichannel values (diff)
+	updates the multichannel maximi.
+	"""
 	newvalues, newpos = hopMax(diff, offset)
 	values, pos = mergeHopMax(values, pos, newvalues, newpos)
 	return values, pos
+
 
 
 if __name__ == '__main__' :

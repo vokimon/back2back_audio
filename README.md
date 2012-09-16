@@ -121,11 +121,12 @@ due to floating point mismatches, use:
 Extra advices
 -------------
 
-Put your tests under a continuous integration system.
+Put your tests under a continuous integration system such
 * BuildBot
 * TestFarm
 * CDash
-If your might be lazy passing tests but bots aren't.
+
+You might be lazy passing tests but bots aren't.
 Connect your bots to your VCS so they test for every commit.
 
 If one b2b test gets red, don't keep it for long,
@@ -135,9 +136,6 @@ you won't notice whether a second one happens.
 If your expectation data is backed by a version 
 control system dare to accept wrong expectation data
 until you fix it. But don't forget.
-
-
-
 
 
 

@@ -19,7 +19,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
 extensions = [
 	'wav',
 	'ogg',
@@ -28,7 +27,7 @@ extensions = [
 	'au',
 ]
 
-def differences(expected, result) :
+def differences(expected, result, diffBase=None) :
 	import sndfile
 	import numpy as np
 
@@ -53,10 +52,9 @@ def differences(expected, result) :
 
 			hopsize = 1024
 			period = 0
-			resultData = np.empty((hopsize, resultReader.channels), np.float64)
-			expectedData = np.empty((hopsize, expectedReader.channels), np.float64)
-
 			channels = expectedReader.channels
+			resultData = np.empty((hopsize, channels), np.float64)
+			expectedData = np.empty((hopsize, channels), np.float64)
 
 			maxdiff      = np.zeros((channels))
 			maxdiffpos   = np.array([None]*channels)

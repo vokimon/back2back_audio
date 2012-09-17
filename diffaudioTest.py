@@ -145,8 +145,6 @@ class MultiChannelDiffTests(unittest.TestCase) :
 
 
 
-
-
 	def savewav(self, data, filename, samplerate) :
 		import os
 		assert not os.access(filename, os.F_OK), "Test temporary file already existed: %s"%filename
@@ -184,7 +182,30 @@ class MultiChannelDiffTests(unittest.TestCase) :
 			self.sinusoid(samples, 880),
 			)
 
-	# Structural difference
+	# Missing files
+
+	def test_comparewaves_missingExpected(self) :
+		data = self.stereoSinusoids()
+
+		self.savewav(data, "data2.wav", 44100)
+		self.assertEquals([
+			'Expected samplerate was 0 but got 44100',
+			'Expected channels was 0 but got 2',
+			'Expected frames was 0 but got 400',
+			], differences("data1.wav", "data2.wav"))
+
+	def test_comparewaves_missingResult(self) :
+		data = self.stereoSinusoids()
+
+		self.savewav(data, "data1.wav", 44100)
+		self.assertEquals([
+			'Expected samplerate was 44100 but got 0',
+			'Expected channels was 2 but got 0',
+			'Expected frames was 400 but got 0',
+			], differences("data1.wav", "data2.wav"))
+
+
+	# Structural differences
 
 	def test_comparewaves_differentChannels(self) :
 		data = self.stereoSinusoids()
@@ -237,6 +258,8 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		data = self.stereoSinusoids()
 
 		self.assertReportEqual(data, data, [])
+
+	# Content differences
 
 	def test_comparewaves_diferentValues(self) :
 		data1 = self.stereoSinusoids()

@@ -53,45 +53,70 @@ def differences(expected, result, diffBase=None) :
 			hopsize = 1024
 			period = 0
 			channels = expectedReader.channels
-			resultData = np.empty((hopsize, channels), np.float64)
-			expectedData = np.empty((hopsize, channels), np.float64)
 
-			maxdiff      = np.zeros((channels))
-			maxdiffpos   = np.array([None]*channels)
-			nanmiss      = np.array([False]*channels)
-			nanmisspos   = np.array([None]*channels)
-			pinfmiss     = np.array([False]*channels)
-			pinfmisspos  = np.array([None]*channels)
-			ninfmiss     = np.array([False]*channels)
-			ninfmisspos  = np.array([None]*channels)
-			while True :
-				actualResultHop = resultReader.read(resultData)
-				actualExpectedHop = expectedReader.read(expectedData)
-				assert actualExpectedHop == actualExpectedHop, "Unexpected unbalanced hop in file readers"
-				if actualExpectedHop == 0 : break # al file read
 
-				resultData = resultData[:actualResultHop]
-				expectedData = expectedData[:actualResultHop]
+			class NullWriter(object) :
+				def __init__(self) :
+					pass
+				def __enter__(self) :
+					pass
+				def __exit__(self, *args ) :
+					pass
+				def write(self, data) :
+					pass
 
-				def check(expected, result, predicate, misses, missesPos) :
-					found_expected = predicate(expectedData)
-					found_result   = predicate(resultData)
-					currentMisses  = (found_expected != found_result)
-					if currentMisses.any() :
-						cummulativeCompare(misses, missesPos, currentMisses, period*hopsize)
-						# remove conflictive values
-						conflictive = found_result | found_expected
-						resultData[conflictive] = 0
-						expectedData[conflictive] = 0
+			if diffBase is None :
+				diffWriter = NullWriter()
+			else :
+				import os.path
+				extension = os.path.splitext(result)[-1]
+				diffwav = diffBase+extension
+				diffWriter = sndfile.WaveWriter(diffwav, 
+						channels = channels,
+						samplerate = expectedReader.samplerate,
+						)
 
-				check(expectedData, resultData, np.isnan, nanmiss, nanmisspos)
-				check(expectedData, resultData, np.isposinf, pinfmiss, pinfmisspos)
-				check(expectedData, resultData, np.isneginf, ninfmiss, ninfmisspos)
+			with diffWriter :
+				resultData = np.empty((hopsize, channels), np.float64)
+				expectedData = np.empty((hopsize, channels), np.float64)
 
-				diffData = resultData - expectedData
-				cummulativeCompare(maxdiff, maxdiffpos, diffData, period*hopsize)
+				maxdiff      = np.zeros((channels))
+				maxdiffpos   = np.array([None]*channels)
+				nanmiss      = np.array([False]*channels)
+				nanmisspos   = np.array([None]*channels)
+				pinfmiss     = np.array([False]*channels)
+				pinfmisspos  = np.array([None]*channels)
+				ninfmiss     = np.array([False]*channels)
+				ninfmisspos  = np.array([None]*channels)
+				while True :
+					actualResultHop = resultReader.read(resultData)
+					actualExpectedHop = expectedReader.read(expectedData)
+					assert actualExpectedHop == actualExpectedHop, "Unexpected unbalanced hop in file readers"
+					if actualExpectedHop == 0 : break # al file read
 
-				period += 1
+					resultData = resultData[:actualResultHop]
+					expectedData = expectedData[:actualResultHop]
+
+					def check(expected, result, predicate, misses, missesPos) :
+						found_expected = predicate(expectedData)
+						found_result   = predicate(resultData)
+						currentMisses  = (found_expected != found_result)
+						if currentMisses.any() :
+							cummulativeCompare(misses, missesPos, currentMisses, period*hopsize)
+							# remove conflictive values
+							conflictive = found_result | found_expected
+							resultData[conflictive] = 0
+							expectedData[conflictive] = 0
+
+					check(expectedData, resultData, np.isnan, nanmiss, nanmisspos)
+					check(expectedData, resultData, np.isposinf, pinfmiss, pinfmisspos)
+					check(expectedData, resultData, np.isneginf, ninfmiss, ninfmisspos)
+
+					diffData = resultData - expectedData
+					diffWriter.write(diffData)
+					cummulativeCompare(maxdiff, maxdiffpos, diffData, period*hopsize)
+
+					period += 1
 
 			errors += [
 				"Value missmatch at channel %i, maximum difference of %f at sample %i" %

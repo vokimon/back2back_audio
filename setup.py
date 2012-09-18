@@ -8,6 +8,9 @@ setup(
     author = "David Garcia Garzon",
     author_email = "voki@canvoki.net",
     url = "https://github.com/vokimon/back2back",
-	packages=['b2btest'],
+	packages=[
+		'b2btest',
+		'wavefile',
+		],
     )
 

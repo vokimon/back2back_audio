@@ -20,9 +20,10 @@ def die(message, errorcode=-1) :
 	print >> sys.stderr, message
 	sys.exit(errorcode)
 
-from diff_audio_files import diff_files_txt, diff_files_wav
+from diff_audio_files import diff_files_txt
+from diffaudio import differences
 diff_for_type = {
-	".wav" : diff_files_wav,
+	".wav" : differences,
 	".txt" : diff_files_txt,
 	".clamnetwork" : diff_files_txt,
 	".xml" : diff_files_txt,
@@ -125,7 +126,7 @@ def passB2BTests(datapath, back2BackCases) :
 			else:
 				print "\033[31m Failed\033[0m"
 				os.system('cp %s %s' % (output, badResultName(base,extension)) )
-				failures.append("Output '%s': %s"%(base, difference))
+				failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
 			removeIfExists(output)
 		if failures :
 			failedCases.append((case, failures))
@@ -183,7 +184,7 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 	availableCases = [case for case, command, outputs in back2BackCases]
 
 	if "--list" in argv :
-		
+
 		for case in availableCases :
 			print case
 		sys.exit()

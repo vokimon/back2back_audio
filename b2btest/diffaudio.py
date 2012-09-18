@@ -118,12 +118,15 @@ def differences(expected, result, diffBase=None) :
 
 					period += 1
 
+			threshold_dBs = -80.0 # dB
+			threshold_amplitude = 10**(threshold_dBs/20)
+
 			errors += [
-				"Value missmatch at channel %i, maximum difference of %f at sample %i" %
-					( channel, value, sample )
+				"Value missmatch at channel %i, maximum difference of %f at sample %i, threshold at %f" %
+					( channel, value, sample, threshold_amplitude )
 					for channel, (value, sample)
 					in enumerate(zip(maxdiff, maxdiffpos))
-					if value > 1e-15
+					if value > threshold_amplitude
 					] + [
 				"Nan missmatch at channel %i, first at sample %i" %
 					( channel, sample )

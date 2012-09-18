@@ -148,8 +148,8 @@ class MultiChannelDiffTests(unittest.TestCase) :
 	def savewav(self, data, filename, samplerate) :
 		import os
 		assert not os.access(filename, os.F_OK), "Test temporary file already existed: %s"%filename
-		import sndfile
-		with sndfile.WaveWriter(
+		import wavefile
+		with wavefile.WaveWriter(
 				filename,
 				samplerate=samplerate,
 				channels=data.shape[1]

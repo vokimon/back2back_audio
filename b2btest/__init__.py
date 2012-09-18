@@ -20,26 +20,26 @@ def die(message, errorcode=-1) :
 	print >> sys.stderr, message
 	sys.exit(errorcode)
 
-from diff_audio_files import diff_files_txt
-from diffaudio import differences
+import diffaudio
+import difftext
 diff_for_type = {
-	".wav" : differences,
-	".txt" : diff_files_txt,
-	".clamnetwork" : diff_files_txt,
-	".xml" : diff_files_txt,
-	".ttl" : diff_files_txt,
+	".wav" : diffaudio.differences,
+	".txt" : difftext.differences,
+	".clamnetwork" : difftext.differences,
+	".xml" : difftext.differences,
+	".ttl" : difftext.differences,
 }
 
 def diff_files(expected, result, diffbase) :
 	if not os.access(result, os.R_OK):
 		print "Result file not found: ", result
-		return "Result was not generated: '%s'"%result
+		return ["Result was not generated: '%s'"%result]
 	if not os.access(expected, os.R_OK):
 		print "Expectation file not found for: ", result
-		return "No expectation for the output. First run? Check the results and accept them with the --accept option."
+		return ["No expectation for the output. First run? Check the results and accept them with the --accept option."]
 	extension = os.path.splitext(result)[-1]
 
-	diff = diff_for_type.get(extension, diff_files_txt)
+	diff = diff_for_type.get(extension, difftext.differences)
 	return diff(expected, result, diffbase)
 
 

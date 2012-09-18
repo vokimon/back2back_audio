@@ -69,7 +69,7 @@ Just like in this b2b script:
 
 	#!/usr/bin/python
 	import sys
-	from audiob2b import runBack2BackProgram
+	from b2btest import runBack2BackProgram
 
 	data_path="path/to/b2bdata"
 	back2BackTests = [

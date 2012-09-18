@@ -1,4 +1,3 @@
-from diff_audio_files import diff_files
 import os, sys, string
 import subprocess
 
@@ -20,6 +19,27 @@ def phase(msg) :
 def die(message, errorcode=-1) :
 	print >> sys.stderr, message
 	sys.exit(errorcode)
+
+from diff_audio_files import diff_files_txt, diff_files_wav
+diff_for_type = {
+	".wav" : diff_files_wav,
+	".txt" : diff_files_txt,
+	".clamnetwork" : diff_files_txt,
+	".xml" : diff_files_txt,
+	".ttl" : diff_files_txt,
+}
+
+def diff_files(expected, result, diffbase) :
+	if not os.access(result, os.R_OK):
+		print "Result file not found: ", result
+		return "Result was not generated: '%s'"%result
+	if not os.access(expected, os.R_OK):
+		print "Expectation file not found for: ", result
+		return "No expectation for the output. First run? Check the results and accept them with the --accept option."
+	extension = os.path.splitext(result)[-1]
+
+	diff = diff_for_type.get(extension, diff_files_txt)
+	return diff(expected, result, diffbase)
 
 
 def archSuffix() :

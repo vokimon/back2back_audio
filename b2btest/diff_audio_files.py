@@ -70,32 +70,3 @@ def diff_files_wav(expected, result, diffbase) :
 	return None
 
 
-
-diff_for_type = {
-	".wav" : diff_files_wav,
-	".txt" : diff_files_txt,
-	".clamnetwork" : diff_files_txt,
-	".xml" : diff_files_txt,
-	".ttl" : diff_files_txt,
-}
-def diff_files(expected, result, diffbase) :
-	if not os.access(result, os.R_OK):
-		print "Result file not found: ", result
-		return "Result was not generated: '%s'"%result
-	if not os.access(expected, os.R_OK):
-		print "Expectation file not found for: ", result
-		return "No expectation for the output. First run? Check the results and accept them with the --accept option."
-	extension = os.path.splitext(result)[-1]
-
-	if extension in diff_for_type:
-		return diff_for_type[extension](expected, result, diffbase)
-	else:
-		extension = '.txt'
-		return diff_for_type[extension](expected, result, diffbase)
-
-if __name__=="__main__" :
-		equals = diff_files(*sys.argv[1:])
-		if equals:
-			print "\033[32m Equals\033[0m"
-		else:
-			print "\033[31m Non equals\033[0m"

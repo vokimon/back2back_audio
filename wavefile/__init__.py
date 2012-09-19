@@ -107,14 +107,14 @@ class WaveMetadata(object) :
 	def __getattr__(self, name) :
 		if name not in self.strings :
 			raise AttributeError(name)
-		stringid = self.strings.index(name)
+		stringid = self.strings.index(name)+1
 		return _lib.sf_get_string(self._sndfile, stringid)
 
 	def __setattr__(self, name, value) :
 		if name not in self.strings :
 			return object.__setattr__(self, name, value)
 
-		stringid = self.strings.index(name)
+		stringid = self.strings.index(name)+1
 		error = _lib.sf_set_string(self._sndfile, stringid, value)
 		if error : print ValueError(
 			self.strings[stringid],
@@ -224,9 +224,11 @@ if __name__ == '__main__' :
 			w.write(data)
 
 	import sys
+	if len(sys.argv)<2 : sys.exit(0)
+
 	import pyaudio
 	p = pyaudio.PyAudio()
-	with WaveReader('MamaLadilla-TuBar.ogg', channels=2) as r :
+	with WaveReader(sys.argv[1], channels=2) as r :
 		# open stream
 		stream = p.open(
 				format = pyaudio.paFloat32,

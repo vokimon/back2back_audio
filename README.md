@@ -1,5 +1,5 @@
-back2back - Light framework to setup back-to-back test scripts
-==============================================================
+b2btest - Light framework to setup back-to-back test scripts
+============================================================
 
 This software is helpfull to prepare and managing a set 
 of back2back test scripts over any piece of software 
@@ -11,6 +11,8 @@ They were initially developed to do b2b tests on audio
 processing algorithms by comparing audio files but now 
 it is extended to many other kind of files, like plain
 text and xml. Other formats can be added by extensions.
+
+[TOC]
 
 Why back-to-back testing
 ------------------------
@@ -33,11 +35,11 @@ You may be changing a behaviour which is not exercised
 by the b2b test, and not noticing.
 
 
-How this tool helps
--------------------
+Easing the workflow with b2btest
+--------------------------------
 
-If b2b tests are hard to run and maintain,
-they will get old and useless.
+When b2b tests are hard to run and maintain,
+they use to get old and useless.
 This script automates most tedious back2back
 related task such as setting up, verifying results,
 accepting changes, clearing data...

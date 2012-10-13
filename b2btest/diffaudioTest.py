@@ -267,7 +267,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		data2[50,1] = 0
 
 		self.assertReportEqual(data1, data2, [
-			"Value missmatch at channel 1, maximum difference of 0.001464 at sample 50",
+			"Value missmatch at channel 1, maximum difference of 0.001464 at sample 50, threshold at 0.000100",
 			])
 
 	def test_comparewaves_diferentValuesNextHops(self) :
@@ -276,7 +276,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		data2[1025,1] = 0
 
 		self.assertReportEqual(data1, data2, [
-			"Value missmatch at channel 1, maximum difference of 0.225822 at sample 1025",
+			"Value missmatch at channel 1, maximum difference of 0.225822 at sample 1025, threshold at 0.000100",
 			])
 
 	def test_comparewaves_missingNaN(self) :

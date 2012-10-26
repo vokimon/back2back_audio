@@ -149,13 +149,14 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		import os
 		assert not os.access(filename, os.F_OK), "Test temporary file already existed: %s"%filename
 		import wavefile
+		self.filestoremove.append(filename)
+		frames, channels = data.shape
 		with wavefile.WaveWriter(
 				filename,
 				samplerate=samplerate,
-				channels=data.shape[1]
+				channels=channels,
 				) as writer :
-			writer.write(data.ravel("C").reshape(data.shape))
-		self.filestoremove.append(filename)
+			writer.write(data.T)
 
 	def setUp(self) :
 		self.filestoremove = []
@@ -182,28 +183,31 @@ class MultiChannelDiffTests(unittest.TestCase) :
 			self.sinusoid(samples, 880),
 			)
 
-	# Missing files
+	# Missing files (raise because caller must ensure they exist)
 
 	def test_comparewaves_missingExpected(self) :
 		data = self.stereoSinusoids()
 
 		self.savewav(data, "data2.wav", 44100)
-		self.assertEquals([
-			'Expected samplerate was 0 but got 44100',
-			'Expected channels was 0 but got 2',
-			'Expected frames was 0 but got 400',
-			], differences("data1.wav", "data2.wav"))
+		try :
+			differences("data1.wav", "data2.wav")
+			self.fail("Exception expected.")
+		except IOError, e :
+			self.assertEquals((
+				"Error opening 'data1.wav': System error.",
+				), e.args)
 
 	def test_comparewaves_missingResult(self) :
 		data = self.stereoSinusoids()
 
 		self.savewav(data, "data1.wav", 44100)
-		self.assertEquals([
-			'Expected samplerate was 44100 but got 0',
-			'Expected channels was 2 but got 0',
-			'Expected frames was 400 but got 0',
-			], differences("data1.wav", "data2.wav"))
-
+		try :
+			differences("data1.wav", "data2.wav")
+			self.fail("Exception expected.")
+		except IOError, e :
+			self.assertEquals((
+				"Error opening 'data2.wav': System error.",
+				), e.args)
 
 	# Structural differences
 

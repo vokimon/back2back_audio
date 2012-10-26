@@ -89,8 +89,8 @@ def differences(expected, result, diffBase=None) :
 				ninfmiss     = np.array([False]*channels)
 				ninfmisspos  = np.array([None]*channels)
 				while True :
-					actualResultHop = resultReader.read(resultData)
-					actualExpectedHop = expectedReader.read(expectedData)
+					actualResultHop = resultReader.read(resultData.T)
+					actualExpectedHop = expectedReader.read(expectedData.T)
 					assert actualExpectedHop == actualExpectedHop, "Unexpected unbalanced hop in file readers"
 					if actualExpectedHop == 0 : break # al file read
 

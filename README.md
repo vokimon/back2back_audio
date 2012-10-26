@@ -120,6 +120,14 @@ due to floating point mismatches, use:
 	./back2back --arch --accept case1 case2
 
 
+Dependencies
+------------
+
+B2b for audio files requires the wavefile module:
+	https://github.com/vokimon/python-wavefile
+Which in turn requires having libsndfile.
+
+
 Extra advices
 -------------
 

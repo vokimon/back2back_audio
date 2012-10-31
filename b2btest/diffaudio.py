@@ -113,7 +113,7 @@ def differences(expected, result, diffBase=None) :
 					check(expectedData, resultData, np.isneginf, ninfmiss, ninfmisspos)
 
 					diffData = resultData - expectedData
-					diffWriter.write(diffData)
+					diffWriter.write(diffData.T)
 					cummulativeCompare(maxdiff, maxdiffpos, diffData, period*hopsize)
 
 					period += 1

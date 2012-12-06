@@ -15,10 +15,10 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="icon_b2b.svg"
-   inkscape:export-filename="/home/vokimon/CajitasDeArena/back2back/icon_b2b.png"
-   inkscape:export-xdpi="74"
-   inkscape:export-ydpi="74">
+   sodipodi:docname="icon_b2btest.svg"
+   inkscape:export-filename="/home/vokimon/CajitasDeArena/back2back/icon_b2btest.png"
+   inkscape:export-xdpi="120"
+   inkscape:export-ydpi="120">
   <defs
      id="defs2987">
     <linearGradient
@@ -84,7 +84,7 @@
        fx="21.3985"
        fy="7.9860773"
        r="24.789873"
-       gradientTransform="matrix(1.4130214,-0.32913809,0.16458155,0.70656427,-14.151763,18.900221)"
+       gradientTransform="matrix(1.4130214,-0.32913809,0.16458155,0.70656427,-14.151763,20.900221)"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        id="linearGradient3888-2">
@@ -140,7 +140,7 @@
        fx="24.791002"
        fy="41.077259"
        r="22.717438"
-       gradientTransform="matrix(1.2779276,0.02884154,-0.00411277,0.18223119,-6.4356477,31.918919)"
+       gradientTransform="matrix(1.2779276,0.02884154,-0.00411277,0.18223119,-6.4356477,33.918919)"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -151,8 +151,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="16.788615"
-     inkscape:cx="23.817721"
-     inkscape:cy="25.322727"
+     inkscape:cx="21.435154"
+     inkscape:cy="22.94016"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -179,7 +179,8 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <g
-       id="g4040">
+       id="g4040"
+       transform="translate(0,2)">
       <text
          transform="scale(-1,1)"
          sodipodi:linespacing="125%"
@@ -213,7 +214,7 @@
        width="44.434875"
        height="6.9421206"
        x="1.5486685"
-       y="36.648426"
+       y="38.648426"
        ry="0" />
     <rect
        style="color:#000000;fill:url(#radialGradient3898-8);fill-opacity:1;fill-rule:nonzero;stroke:#2c4d64;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -221,19 +222,21 @@
        width="43.184029"
        height="39.788872"
        x="2.5612595"
-       y="1.0038658"
+       y="3.0038657"
        ry="7.6837788" />
     <path
        sodipodi:type="arc"
-       style="color:#000000;fill:url(#radialGradient4004);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;filter:url(#filter4019)"
+       style="color:#000000;fill:url(#radialGradient4004);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter4019);enable-background:accumulate"
        id="path3996"
        sodipodi:cx="23.140682"
        sodipodi:cy="33.704597"
        sodipodi:rx="19.924217"
        sodipodi:ry="9.8876524"
-       d="m 43.064899,33.704597 a 19.924217,9.8876524 0 1 1 -39.848434,0 19.924217,9.8876524 0 1 1 39.848434,0 z" />
+       d="m 43.064899,33.704597 a 19.924217,9.8876524 0 1 1 -39.848434,0 19.924217,9.8876524 0 1 1 39.848434,0 z"
+       transform="translate(0,2)" />
     <g
-       id="g4028">
+       id="g4028"
+       transform="translate(0,2)">
       <g
          id="g4054"
          transform="matrix(0.82246421,0,0,0.82246421,4.2572633,3.8187041)">
@@ -274,6 +277,7 @@
        sodipodi:ry="0.32760295"
        d="m 23.230029,34.8661 a 0.02978209,0.32760295 0 0 1 -0.01275,0.268778 L 23.200247,34.8661 z"
        sodipodi:start="0"
-       sodipodi:end="0.96217535" />
+       sodipodi:end="0.96217535"
+       transform="translate(0,2)" />
   </g>
 </svg>

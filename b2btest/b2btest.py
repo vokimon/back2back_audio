@@ -1,19 +1,9 @@
 import os, sys, string
 import subprocess
-from consolemsg import step, fail, success
+from consolemsg import step, fail, success, error, warn, printStdError, color
 
-def run(command) :
-	step(command)
-	errorCode = os.system(command)
-	if errorCode :
-		fail("\n\nThe following command failed: {}".format(command))
-	return not errorCode
-
-def phase(msg) :
-	step(msg)
-
-def die(message, errorcode=-1) :
-	fail(message, errorcode)
+def printcolor(colorcode, message):
+	printStdError(color(colorcode, message))
 
 from . import diffaudio
 from . import difftext
@@ -89,54 +79,55 @@ def removeIfExists(filename) :
 	try: os.remove(filename)
 	except: pass
 
+def passB2BTest(datapath, case, command, outputs):
+	step("Test: %s Command: '%s'"%(case,command))
+	for output in outputs :
+		removeIfExists(output)
+	try :
+		commandError = subprocess.call(command, shell=True)
+		if commandError :
+			return ["Command failed with return code %i:\n'%s'"%(commandError,command)]
+	except OSError as e :
+		return ["Unable to run command: '%s'"%(command)]
+	failures = []
+	for output in outputs :
+		extension = os.path.splitext(output)[-1]
+		base = prefix(datapath, case, output)
+		expected = expectedName(base, extension)
+		diffbase = diffBaseName(base)
+		difference = diff_files(expected, output, diffbase)
+		#diffbase = diffbase+'.wav'
+		diffbase = diffbase + extension
+
+		if not difference:
+			printcolor('32;1', " Passed")
+			removeIfExists(diffbase)
+			removeIfExists(diffbase+'.png')
+			removeIfExists(badResultName(base,extension))
+		else:
+			printcolor('31;1', " Failed")
+			os.system('cp %s %s' % (output, badResultName(base,extension)) )
+			failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
+		removeIfExists(output)
+		return failures
+
 def passB2BTests(datapath, back2BackCases) :
 	failedCases = []
 	for case, command, outputs in back2BackCases :
-		phase("Test: %s Command: '%s'"%(case,command))
-		for output in outputs :
-			removeIfExists(output)
-		try :
-			commandError = subprocess.call(command, shell=True)
-			if commandError :
-				failedCases.append((case, ["Command failed with return code %i:\n'%s'"%(commandError,command)]))
-				continue
-		except OSError as e :
-			failedCases.append((case, ["Unable to run command: '%s'"%(command)]))
-			continue
-		failures = []
-		for output in outputs :
+		failures = passB2BTest(datapath, case, command, outputs)
+		if not failures: continue
+		failedCases+=[(case, failures)]
 
-			extension = os.path.splitext(output)[-1]
-			base = prefix(datapath, case, output)
-			expected = expectedName(base, extension)
-			diffbase = diffBaseName(base)
-			difference = diff_files(expected, output, diffbase)
-			#diffbase = diffbase+'.wav'
-			diffbase = diffbase + extension
-
-			if not difference:
-				success(" Passed")
-				removeIfExists(diffbase)
-				removeIfExists(diffbase+'.png')
-				removeIfExists(badResultName(base,extension))
-			else:
-				error(" Failed")
-				os.system('cp %s %s' % (output, badResultName(base,extension)) )
-				failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
-			removeIfExists(output)
-		if failures :
-			failedCases.append((case, failures))
-
-	sys.stdout.write("Summary:\n")
-	success('%i passed cases'%(len(back2BackCases)-len(failedCases)))
+	sys.stderr.write("Summary:\n")
+	printcolor('32;1', '%i passed cases'%(len(back2BackCases)-len(failedCases)))
 
 	if not failedCases : return True
 
-	error('%i failed cases!'%len(failedCases))
+	printcolor('31;1', '%i failed cases!'%len(failedCases))
 	for case, msgs in failedCases :
-		sys.stdout.write(case + " :\n")
+		sys.stderr.write(case + " :\n")
 		for msg in msgs :
-			sys.stdout.write( "\t%s"%msg)
+			sys.stderr.write( "\t%s\n"%msg)
 	return False
 
 help ="""
@@ -219,18 +210,19 @@ def addDataDrivenTestCases():
 
 #addDataDrivenTestCases()
 
-def assertProgramOutputsB2B(self, command, ignore=[], *outputs):
+def assertProgramOutputsB2B(self, command, *outputs, **kwd):
 	"""Runs the command and asserts the outputs are equal to the expected ones."""
+	# TODO
 
 
 def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 
-	"--help" not in sys.argv or die(help, 0)
+	"--help" not in sys.argv or fail(help, 0)
 
 	architectureSpecific = "--arch" in argv
 	if architectureSpecific : argv.remove("--arch")
 
-	os.access( datapath, os.X_OK ) or die(
+	os.access( datapath, os.X_OK ) or fail(
 		"Datapath at '%s' not available. "%datapath +
 		"Check the back 2 back script on information on how to obtain it.")
 
@@ -244,10 +236,10 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 
 	if "--accept" in argv :
 		cases = argv[argv.index("--accept")+1:]
-		cases or die("Option --accept needs a set of cases to accept.\nAvailable cases:\n"+"\n".join(["\t"+case for case, command, outputs in back2BackCases]))
+		cases or fail("Option --accept needs a set of cases to accept.\nAvailable cases:\n"+"\n".join(["\t"+case for case, command, outputs in back2BackCases]))
 		unsupportedCases = set(cases).difference(set(availableCases))
 		if unsupportedCases:
-			die("The following specified cases are not available:\n" + _caseList(unsupportedCases) + "Try with:\n" + _caseList(availableCases))
+			fail("The following specified cases are not available:\n" + _caseList(unsupportedCases) + "Try with:\n" + _caseList(availableCases))
 		accept(datapath, back2BackCases, architectureSpecific, cases)
 		sys.exit()
 
@@ -256,7 +248,7 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 		accept(datapath, back2BackCases, architectureSpecific)
 		sys.exit()
 
-	passB2BTests(datapath, back2BackCases) or die("Tests not passed")
+	passB2BTests(datapath, back2BackCases) or fail("Tests not passed")
 
 
 ### End of generic stuff

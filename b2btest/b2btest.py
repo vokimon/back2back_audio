@@ -1,27 +1,22 @@
 import os, sys, string
 import subprocess
+from consolemsg import step, fail, success
 
 def run(command) :
-	print '\033[32m:: ', command, '\033[0m'
+	step(command)
 	errorCode = os.system(command)
 	if errorCode :
-		print "\n\nThe following command failed:"
-		print '\033[31m', command, '\033[0m'
-		sys.exit()
+		fail("\n\nThe following command failed: {}".format(command))
 	return not errorCode
 
-def norun(command) :
-	print '\033[31mXX ', command, '\033[0m'
-
 def phase(msg) :
-	print '\033[33m== ', msg, '\033[0m'
+	step(msg)
 
 def die(message, errorcode=-1) :
-	print >> sys.stderr, message
-	sys.exit(errorcode)
+	fail(message, errorcode)
 
-import diffaudio
-import difftext
+from . import diffaudio
+from . import difftext
 diff_for_type = {
 	".wav" : diffaudio.differences,
 	".txt" : difftext.differences,
@@ -32,10 +27,10 @@ diff_for_type = {
 
 def diff_files(expected, result, diffbase) :
 	if not os.access(result, os.R_OK):
-		print "Result file not found: ", result
+		error("Result file not found: {}".format(result))
 		return ["Result was not generated: '%s'"%result]
 	if not os.access(expected, os.R_OK):
-		print "Expectation file not found for: ", result
+		error("Expectation file not found for: {}".format(result))
 		return ["No expectation for the output. First run? Check the results and accept them with the --accept option."]
 	extension = os.path.splitext(result)[-1]
 
@@ -44,7 +39,7 @@ def diff_files(expected, result, diffbase) :
 
 
 def archSuffix() :
-	return string.strip(os.popen('uname -m').read())
+	return os.popen('uname -m').read().strip()
 
 def expectedArchName(base, extension='.wav') :
 	suffix_arch = archSuffix()
@@ -80,14 +75,15 @@ def accept(datapath, back2BackCases, archSpecific=False, cases=[]) :
 			base = prefix(datapath, case, output)
 			badResult = badResultName(base, extension)
 			if not os.access(badResult, os.R_OK) : continue
-			print "Accepting", badResult
+			warn("Accepting {}".format(badResult))
 
 			if archSpecific :
 				os.rename(badResult, expectedArchName(base, extension))
 			else :
 				os.rename(badResult, expectedName(base, extension))
 	if remainingCases :
-		print "Warning: No such test cases:", ", ".join("'%s'"%case for case in remainingCases)
+		warn("No such test cases: {}".format(
+			", ".join("'%s'"%case for case in remainingCases)))
 
 def removeIfExists(filename) :
 	try: os.remove(filename)
@@ -104,7 +100,7 @@ def passB2BTests(datapath, back2BackCases) :
 			if commandError :
 				failedCases.append((case, ["Command failed with return code %i:\n'%s'"%(commandError,command)]))
 				continue
-		except OSError, e :
+		except OSError as e :
 			failedCases.append((case, ["Unable to run command: '%s'"%(command)]))
 			continue
 		failures = []
@@ -119,28 +115,28 @@ def passB2BTests(datapath, back2BackCases) :
 			diffbase = diffbase + extension
 
 			if not difference:
-				print "\033[32m Passed\033[0m"
+				success(" Passed")
 				removeIfExists(diffbase)
 				removeIfExists(diffbase+'.png')
 				removeIfExists(badResultName(base,extension))
 			else:
-				print "\033[31m Failed\033[0m"
+				error(" Failed")
 				os.system('cp %s %s' % (output, badResultName(base,extension)) )
 				failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
 			removeIfExists(output)
 		if failures :
 			failedCases.append((case, failures))
 
-	print "Summary:"
-	print '\033[32m%i passed cases\033[0m'%(len(back2BackCases)-len(failedCases))
+	sys.stdout.write("Summary:\n")
+	success('%i passed cases'%(len(back2BackCases)-len(failedCases)))
 
 	if not failedCases : return True
 
-	print '\033[31m%i failed cases!\033[0m'%len(failedCases)
+	error('%i failed cases!'%len(failedCases))
 	for case, msgs in failedCases :
-		print case, ":"
+		sys.stdout.write(case + " :\n")
 		for msg in msgs :
-			print "\t%s"%msg
+			sys.stdout.write( "\t%s"%msg)
 	return False
 
 help ="""
@@ -170,6 +166,63 @@ due to floating point missmatches, use:
 def _caseList(cases) :
 	return "".join(["\t"+case+"\n" for case in cases])
 
+
+def makeB2bTestCase(testCaseName, id) :
+	def b2bTestCase(self):
+		self.maxDiff = None
+		resultFilename = os.path.join('b2bdata',testCaseName+'-result.html')
+		expectedFilename = os.path.join('b2bdata',testCaseName+'-expected.html')
+		if os.access(resultFilename, os.R_OK) :
+			os.unlink(resultFilename)
+
+		output = renderMako(self.fixture.template, self.fixture.model, id)
+
+		try:
+			with codecs.open(expectedFilename,'r', 'utf8') as expectedfile:
+				expected = expectedfile.read()
+		except:
+			expected = None
+
+		if expected != output :
+			with codecs.open(resultFilename,'w', 'utf8') as outputfile:
+				outputfile.write(output)
+
+		if expected is None :
+			self.fail(
+				"No expectation for the testMethod, use the 'accept' "
+				"subcommand to accept the current result as good '{}'"
+				.format(resultFilename))
+
+		self.assertMultiLineEqual(expected, output,
+			"B2B data missmatch, use the 'accept' "
+			"subcommand to accept the current result as good '{}'"
+			.format(resultFilename))
+
+	return b2bTestCase
+
+
+def addDataDrivenTestCases():
+	for testCase, fixture in testcases.items() :
+		klassname = 'Test_B2B_{0}'.format(testCase)
+		# Dynamically create a TestCase Subclass with all the test
+		testMethods = dict([
+			('test_{0}'.format(testMethod), 
+				makeB2bTestCase(
+					testCase+'.'+testMethod, data))
+			for testMethod, data in fixture.cases.items()
+			]+[
+				('longMessage', True),
+				('fixture', fixture),
+			])
+
+		globals()[klassname] = type( klassname, (unittest.TestCase,), testMethods)
+
+#addDataDrivenTestCases()
+
+def assertProgramOutputsB2B(self, command, ignore=[], *outputs):
+	"""Runs the command and asserts the outputs are equal to the expected ones."""
+
+
 def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 
 	"--help" not in sys.argv or die(help, 0)
@@ -186,7 +239,7 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 	if "--list" in argv :
 
 		for case in availableCases :
-			print case
+			sys.stdout.write(case)
 		sys.exit()
 
 	if "--accept" in argv :
@@ -199,7 +252,7 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 		sys.exit()
 
 	if "--acceptall" in argv :
-		print "Warning: Accepting any faling case"
+		warn("Accepting any faling case")
 		accept(datapath, back2BackCases, architectureSpecific)
 		sys.exit()
 

@@ -17,7 +17,7 @@ and managing the aceptance of new references.
 setup(
 	name = "b2btest",
 	version = "1.1~git",
-	requires=['wavefile'],
+	requires=['wavefile', 'consolemsg'],
 	description = "Light framework to setup back-to-back test scripts",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",

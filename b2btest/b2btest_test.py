@@ -104,9 +104,10 @@ class B2BTest_Test(unittest.TestCase):
 		self.assertEqual(self.read(self.expectedFile()), 'differentData')
 
 
+unittest.TestCase.__str__ = unittest.TestCase.id
 
 
-if __name__ == '__main__':           
+if __name__ == '__main__':
 	unittest.main()
 
 #vim: noet sw=4 ts=4

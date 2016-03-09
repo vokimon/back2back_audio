@@ -1,5 +1,5 @@
-#!/usr/bin/python
-from distutils.core import setup
+#!/usr/bin/env python
+from setuptools import setup, find_packages
 
 readme = """\
 This software is helpfull to prepare and manage a set
@@ -17,16 +17,18 @@ and managing the aceptance of new references.
 setup(
 	name = "b2btest",
 	version = "1.1~git",
-	requires=['wavefile', 'consolemsg'],
+	requires=[
+        'wavefile',
+        'consolemsg',
+        ],
 	description = "Light framework to setup back-to-back test scripts",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",
 	url = 'https://github.com/vokimon/back2back',
 	long_description = readme,
 	license = 'GNU General Public License v3 or later (GPLv3+)',
-	packages=[
-		'b2btest',
-		],
+    test_suite = 'b2btest',
+	packages=find_packages(exclude=['*_test']),
 	classifiers = [
 		'Programming Language :: Python',
 		'Programming Language :: Python :: 2',

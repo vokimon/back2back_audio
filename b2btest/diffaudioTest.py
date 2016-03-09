@@ -192,7 +192,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		try :
 			differences("data1.wav", "data2.wav")
 			self.fail("Exception expected.")
-		except IOError, e :
+		except IOError as e :
 			self.assertEquals((
 				"Error opening 'data1.wav': System error.",
 				), e.args)
@@ -204,7 +204,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		try :
 			differences("data1.wav", "data2.wav")
 			self.fail("Exception expected.")
-		except IOError, e :
+		except IOError as e :
 			self.assertEquals((
 				"Error opening 'data2.wav': System error.",
 				), e.args)

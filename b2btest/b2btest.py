@@ -15,6 +15,12 @@ diff_for_type = {
 	".ttl" : difftext.differences,
 }
 
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError=IOError
+
+
 def diff_files(expected, result, diffbase) :
 	if not os.access(result, os.R_OK):
 		error("Result file not found: {}".format(result))
@@ -197,7 +203,7 @@ def addDataDrivenTestCases():
 		klassname = 'Test_B2B_{0}'.format(testCase)
 		# Dynamically create a TestCase Subclass with all the test
 		testMethods = dict([
-			('test_{0}'.format(testMethod), 
+			('test_{0}'.format(testMethod),
 				makeB2bTestCase(
 					testCase+'.'+testMethod, data))
 			for testMethod, data in fixture.cases.items()
@@ -250,5 +256,86 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 
 	passB2BTests(datapath, back2BackCases) or fail("Tests not passed")
 
+def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 
-### End of generic stuff
+	def safeRemove(filename):
+		try: os.unlink(filename)
+		except: pass
+
+	def read(filename):
+		with open(filename) as f:
+			return f.read()
+
+	def write(filename, content):
+		with open(filename,'w') as f:
+			f.write(content)
+
+	if resultFile is None:
+		try: os.makedirs(self.b2bdatapath)
+		except OSError: pass
+		resultFile = os.path.join(
+			self.b2bdatapath,
+			self.id()+"-result",
+			)
+	if expectedFile is None:
+		expectedFile = os.path.join(
+			self.b2bdatapath,
+			self.id()+"-expected",
+			)
+
+	accepting = hasattr(self, 'acceptMode') and self.acceptMode
+	try:
+		expectation = read(expectedFile)
+	except IOError as error:
+		if accepting:
+			write(expectedFile, result)
+			safeRemove(resultFile)
+			return
+		else:
+			write(resultFile, result)
+			self.fail("No expectation found, please, check and accept '{}'"
+				.format(resultFile))
+	try:
+		self.assertMultiLineEqual(result, expectation)
+	except AssertionError:
+		if accepting:
+			write(expectedFile, result)
+			safeRemove(resultFile)
+			raise Warning("Accepting new data for '{}'"
+				.format(expectedFile))
+		else:
+			write(resultFile, result)
+		raise
+	safeRemove(resultFile)
+
+	return
+
+    # old code non-tdd
+	accepting = hasattr(self, 'acceptMode') and self.acceptMode
+
+	def generateExpectation():
+		if accepting:
+			write(expectedFile, result)
+			safeRemove(resultFile)
+			raise Warning("Accepting new data for '{}'"
+				.format(expectedFile))
+		write(resultFile, result)
+
+	try:
+		expectation = read(expectedFile)
+	except (FileNotFoundError, IOError):
+		generateExpectation()
+
+	try:
+		self.assertMultiLineEqual(result,expectation)
+	except (AssertionError):
+		generateExpectation()
+		raise
+	else:
+		safeRemove(resultFile)
+
+import unittest
+unittest.TestCase.assertB2BEqual = assertB2BEqual
+
+
+#vim: noet sw=4 ts=4

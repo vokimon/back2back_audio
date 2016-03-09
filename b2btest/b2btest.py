@@ -310,29 +310,6 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 
 	return
 
-	# old code non-tdd
-	accepting = hasattr(self, 'acceptMode') and self.acceptMode
-
-	def generateExpectation():
-		if accepting:
-			write(expectedFile, result)
-			safeRemove(resultFile)
-			raise Warning("Accepting new data for '{}'"
-				.format(expectedFile))
-		write(resultFile, result)
-
-	try:
-		expectation = read(expectedFile)
-	except (FileNotFoundError, IOError):
-		generateExpectation()
-
-	try:
-		self.assertMultiLineEqual(result,expectation)
-	except (AssertionError):
-		generateExpectation()
-		raise
-	else:
-		safeRemove(resultFile)
 
 import unittest
 unittest.TestCase.assertB2BEqual = assertB2BEqual

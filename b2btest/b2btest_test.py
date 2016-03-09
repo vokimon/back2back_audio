@@ -14,9 +14,6 @@ class B2BTest_Test(unittest.TestCase):
 		for f in os.listdir(self.b2bdatapath):
 			os.unlink(os.path.join(self.b2bdatapath, f))
 
-	def deleteLater(self, filename):
-		self.toDelete.append(filename)
-
 	def tearDown(self):
 		for f in self.toDelete:
 			try: os.unlink(f)
@@ -24,6 +21,9 @@ class B2BTest_Test(unittest.TestCase):
 		self.assertEqual(os.listdir(self.b2bdatapath), [])
 		for f in os.listdir(self.b2bdatapath):
 			os.unlink(os.path.join(self.b2bdatapath, f))
+
+	def deleteLater(self, filename):
+		self.toDelete.append(filename)
 
 	def read(self, filename):
 		with open(filename) as f:
@@ -45,6 +45,14 @@ class B2BTest_Test(unittest.TestCase):
 	def expectedFile(self):
 		return os.path.join(self.b2bdatapath,self.id()+'-expected')
 
+	def assertExpectedEquals(self, expectation):
+		self.deleteLater(self.expectedFile())
+		self.assertEqual(self.read(self.expectedFile()), expectation)
+
+	def assertResultEquals(self, result):
+		self.deleteLater(self.resultFile())
+		self.assertEqual(self.read(self.resultFile()), result)
+
 	def test_assertB2BEqual_whenNoExpectation_generatesResultsAndFails(self):
 
 		with self.assertRaises(AssertionError) as ass:
@@ -54,8 +62,7 @@ class B2BTest_Test(unittest.TestCase):
 			"No expectation found, please, check and accept '{}'"
 			.format(self.resultFile()))
  
-		self.assertEqual(self.read(self.resultFile()), 'data')
-		self.deleteLater(self.resultFile())
+		self.assertResultEquals('data')
 
 	def test_accepting_withNoExpectation_generatesItAndClearsResults(self):
 		self.acceptMode=True
@@ -66,8 +73,7 @@ class B2BTest_Test(unittest.TestCase):
 		self.assertEqual(ass.exception.args[0],
 			"Accepting new data for '{}'".format(self.expectedFile()))
 
-		self.assertEqual(self.read(self.expectedFile()), 'data')
-		self.deleteLater(self.expectedFile())
+		self.assertExpectedEquals('data')
 
 	def test_assertB2BEqual_differentResult_generatesExpectationAndFails(self):
 		self.setExpected('data')
@@ -80,18 +86,15 @@ class B2BTest_Test(unittest.TestCase):
 			"+ data\n"
 			"")
 
-		self.deleteLater(self.expectedFile())
-		self.assertEqual(self.read(self.expectedFile()), 'data')
-		self.deleteLater(self.resultFile())
-		self.assertEqual(self.read(self.resultFile()), 'differentData')
+		self.assertExpectedEquals('data')
+		self.assertResultEquals('differentData')
 
 	def test_assertB2BEqual_matchingClearsAnyFormerResult(self):
 		self.setExpected('data')
 		self.setResult('bad data')
 		self.assertB2BEqual('data')
 
-		self.deleteLater(self.expectedFile())
-		self.assertEqual(self.read(self.expectedFile()), 'data')
+		self.assertExpectedEquals('data')
 
 	def test_accepting_differentResult_generatesExpectationAndFails(self):
 		self.setExpected('data')
@@ -103,8 +106,7 @@ class B2BTest_Test(unittest.TestCase):
 		self.assertEqual(ass.exception.args[0],
 			"Accepting new data for '{}'".format(self.expectedFile()))
 
-		self.deleteLater(self.expectedFile())
-		self.assertEqual(self.read(self.expectedFile()), 'differentData')
+		self.assertExpectedEquals('differentData')
 
 
 unittest.TestCase.__str__ = unittest.TestCase.id

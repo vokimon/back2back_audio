@@ -283,35 +283,32 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 			self.id()+"-expected",
 			)
 
-	accepting = hasattr(self, 'acceptMode') and self.acceptMode
+	def writeResultsOrAccept():
+		accepting = hasattr(self, 'acceptMode') and self.acceptMode
+		if not accepting:
+			write(resultFile, result)
+			return
+		write(expectedFile, result)
+		safeRemove(resultFile)
+		raise Warning("Accepting new data for '{}'"
+			.format(expectedFile))
+
 	try:
 		expectation = read(expectedFile)
 	except IOError as error:
-		if accepting:
-			write(expectedFile, result)
-			safeRemove(resultFile)
-			raise Warning("Accepting new data for '{}'"
-				.format(expectedFile))
-		else:
-			write(resultFile, result)
-			self.fail("No expectation found, please, check and accept '{}'"
-				.format(resultFile))
+		writeResultsOrAccept()
+		self.fail("No expectation found, please, check and accept '{}'"
+			.format(resultFile))
 	try:
 		self.assertMultiLineEqual(result, expectation)
 	except AssertionError:
-		if accepting:
-			write(expectedFile, result)
-			safeRemove(resultFile)
-			raise Warning("Accepting new data for '{}'"
-				.format(expectedFile))
-		else:
-			write(resultFile, result)
+		writeResultsOrAccept()
 		raise
 	safeRemove(resultFile)
 
 	return
 
-    # old code non-tdd
+	# old code non-tdd
 	accepting = hasattr(self, 'acceptMode') and self.acceptMode
 
 	def generateExpectation():

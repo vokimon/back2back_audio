@@ -123,9 +123,11 @@ due to floating point mismatches, use:
 Dependencies
 ------------
 
-B2b for audio files requires the wavefile module:
-	https://github.com/vokimon/python-wavefile
-Which in turn requires having libsndfile.
+B2b for audio files requires the [wavefile] module:
+Which in turn requires having [libsndfile] library installed.
+
+[wavefile]: https://github.com/vokimon/python-wavefile
+[libsndfile]: http://www.mega-nerd.com/libsndfile/
 
 
 Extra advices

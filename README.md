@@ -58,8 +58,34 @@ Features:
 * Comparators and diff generators can be added for your own file type.
 * Allows to specify architecture dependant outputs for the same test.
 
-How does it works
------------------
+Back2Back testing in your unittest
+----------------------------------
+
+```python
+import unittest
+import b2btest # Not used but load a new assertion method for TestCase
+import datetime
+
+class MyTest(unittest.TestCase):
+	def test_this(self):
+		self.assertB2BEqual("data")
+
+	def test_that_willallwaysfail(self):
+		self.assertB2BEqual(str(datetime.datetime.now()))
+
+if __name__ == '__main__':
+	# acceptMode attribute makes the assert accept the results
+	# expectation as new
+	if '--accept' in sys.argv:
+		sys.argv.remove('--accept')
+		unittest.TestCase.acceptMode = True
+
+	unittest.main()
+```
+
+
+Back2Back testing of programs
+-----------------------------
 
 A b2b test is a python script which defines a set of tests.
 For each test you want to run, you need to define:

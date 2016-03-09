@@ -61,7 +61,10 @@ class B2BTest_Test(unittest.TestCase):
 		self.acceptMode=True
 		self.setResult('data')
 
-		self.assertB2BEqual('data')
+		with self.assertRaises(Warning) as ass:
+			self.assertB2BEqual('data')
+		self.assertEqual(ass.exception.args[0],
+			"Accepting new data for '{}'".format(self.expectedFile()))
 
 		self.assertEqual(self.read(self.expectedFile()), 'data')
 		self.deleteLater(self.expectedFile())

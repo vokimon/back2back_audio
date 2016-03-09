@@ -290,7 +290,8 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 		if accepting:
 			write(expectedFile, result)
 			safeRemove(resultFile)
-			return
+			raise Warning("Accepting new data for '{}'"
+				.format(expectedFile))
 		else:
 			write(resultFile, result)
 			self.fail("No expectation found, please, check and accept '{}'"

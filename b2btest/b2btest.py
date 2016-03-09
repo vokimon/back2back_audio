@@ -278,6 +278,8 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 			self.id()+"-result",
 			)
 	if expectedFile is None:
+		try: os.makedirs(self.b2bdatapath)
+		except OSError: pass
 		expectedFile = os.path.join(
 			self.b2bdatapath,
 			self.id()+"-expected",

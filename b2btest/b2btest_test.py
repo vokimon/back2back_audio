@@ -11,6 +11,8 @@ class B2BTest_Test(unittest.TestCase):
 		self.b2bdatapath='b2bdata'
 		self.acceptMode=False
 		del self.acceptMode
+		try: os.makedirs(self.b2bdatapath)
+		except OSError: pass
 		for f in os.listdir(self.b2bdatapath):
 			os.unlink(os.path.join(self.b2bdatapath, f))
 

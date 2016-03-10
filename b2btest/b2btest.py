@@ -256,6 +256,7 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 
 	passB2BTests(datapath, back2BackCases) or fail("Tests not passed")
 
+
 def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 
 	def safeRemove(filename):
@@ -310,9 +311,48 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 
 	return
 
+def assertCommandB2BEqual(self, command, *outputs):
+	commandError = subprocess.call(command, shell=True)
+	if commandError:
+		self.fail("Command failed with return code {}:\n'{}'"
+			.format(commandError, command))
+
+	return
+	step("Test: %s Command: '%s'"%(case,command))
+	for output in outputs :
+		removeIfExists(output)
+	try :
+		commandError = subprocess.call(command, shell=True)
+		if commandError :
+			return ["Command failed with return code %i:\n'%s'"%(commandError,command)]
+	except OSError as e :
+		return ["Unable to run command: '%s'"%(command)]
+	failures = []
+	for output in outputs :
+		extension = os.path.splitext(output)[-1]
+		base = prefix(datapath, case, output)
+		expected = expectedName(base, extension)
+		diffbase = diffBaseName(base)
+		difference = diff_files(expected, output, diffbase)
+		#diffbase = diffbase+'.wav'
+		diffbase = diffbase + extension
+
+		if not difference:
+			printcolor('32;1', " Passed")
+			removeIfExists(diffbase)
+			removeIfExists(diffbase+'.png')
+			removeIfExists(badResultName(base,extension))
+		else:
+			printcolor('31;1', " Failed")
+			os.system('cp %s %s' % (output, badResultName(base,extension)) )
+			failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
+		removeIfExists(output)
+		return failures
+
 
 import unittest
 unittest.TestCase.assertB2BEqual = assertB2BEqual
+unittest.TestCase.assertCommandB2BEqual = assertCommandB2BEqual
 
 
 #vim: noet sw=4 ts=4

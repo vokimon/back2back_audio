@@ -110,6 +110,38 @@ class B2BTest_Test(unittest.TestCase):
 
 		self.assertExpectedEquals('differentData')
 
+class ProgramB2B_Test(unittest.TestCase):
+	def test_noOutput_whenFails(self):
+		with self.assertRaises(AssertionError) as ass:
+			self.assertCommandB2BEqual(
+				"false",
+			)
+		self.assertMultiLineEqual(ass.exception.args[0],
+			"Command failed with return code 1:\n"
+			"'false'")
+
+	def test_noOutput_whenSucceds(self):
+		self.assertCommandB2BEqual(
+			"true",
+		)
+
+	def test_noOutput_whenBadCommand(self):
+		with self.assertRaises(AssertionError) as ass:
+			self.assertCommandB2BEqual(
+				"badCommand",
+			)
+		self.assertEqual(ass.exception.args[0],
+			"Command failed with return code 127:\n"
+			"'badCommand'")
+
+	def test_singleOutput(self):
+		# TODO: in progress
+		self.assertCommandB2BEqual(
+			"echo data > output",
+			"output",
+			)
+
+
 
 unittest.TestCase.__str__ = unittest.TestCase.id
 

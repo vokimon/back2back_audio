@@ -27,7 +27,8 @@ def diff_files(expected, result, diffbase) :
 		return ["Result was not generated: '%s'"%result]
 	if not os.access(expected, os.R_OK):
 		error("Expectation file not found for: {}".format(result))
-		return ["No expectation for the output. First run? Check the results and accept them with the --accept option."]
+		return ["No expectation for the output. First run? "
+			"Check the results and accept them with the --accept option."]
 	extension = os.path.splitext(result)[-1]
 
 	diff = diff_for_type.get(extension, difftext.differences)
@@ -235,17 +236,24 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 	availableCases = [case for case, command, outputs in back2BackCases]
 
 	if "--list" in argv :
-
-		for case in availableCases :
-			sys.stdout.write(case)
+		sys.stdout.write("Available cases:\n")
+		sys.stdout.write(_caseList(availableCases))
 		sys.exit()
 
 	if "--accept" in argv :
 		cases = argv[argv.index("--accept")+1:]
-		cases or fail("Option --accept needs a set of cases to accept.\nAvailable cases:\n"+"\n".join(["\t"+case for case, command, outputs in back2BackCases]))
+		cases or fail(
+			"Option --accept needs a set of cases to accept.\n"
+			"Available cases:\n"+
+			_caseList((case for case, command, outputs in back2BackCases))
+			)
 		unsupportedCases = set(cases).difference(set(availableCases))
-		if unsupportedCases:
-			fail("The following specified cases are not available:\n" + _caseList(unsupportedCases) + "Try with:\n" + _caseList(availableCases))
+		unsupportedCases and fail(
+			"The following specified cases are not available:\n" +
+			_caseList(unsupportedCases) +
+			"Try with:\n" +
+			_caseList(availableCases)
+			)
 		accept(datapath, back2BackCases, architectureSpecific, cases)
 		sys.exit()
 
@@ -346,7 +354,8 @@ def assertCommandB2BEqual(self, command, *outputs):
 		else:
 			printcolor('31;1', " Failed")
 			os.system('cp %s %s' % (output, badResultName(base,extension)) )
-			failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
+			failures.append("Output '%s':\n%s"%(
+				base, '\n'.join(['\t- %s'%item for item in difference])))
 		removeIfExists(output)
 		return failures
 

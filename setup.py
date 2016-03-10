@@ -27,7 +27,8 @@ setup(
 	url = 'https://github.com/vokimon/back2back',
 	long_description = readme,
 	license = 'GNU General Public License v3 or later (GPLv3+)',
-    test_suite = 'b2btest',
+	test_suite = 'b2btest',
+	scripts=['back2back'],
 	packages=find_packages(exclude=['*_test']),
 	classifiers = [
 		'Programming Language :: Python',

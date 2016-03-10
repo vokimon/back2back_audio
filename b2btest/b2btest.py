@@ -302,14 +302,15 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 		writeResultsOrAccept()
 		self.fail("No expectation found, please, check and accept '{}'"
 			.format(resultFile))
+
 	try:
 		self.assertMultiLineEqual(result, expectation)
 	except AssertionError:
 		writeResultsOrAccept()
 		raise
+
 	safeRemove(resultFile)
 
-	return
 
 def assertCommandB2BEqual(self, command, *outputs):
 	commandError = subprocess.call(command, shell=True)
@@ -353,6 +354,8 @@ def assertCommandB2BEqual(self, command, *outputs):
 import unittest
 unittest.TestCase.assertB2BEqual = assertB2BEqual
 unittest.TestCase.assertCommandB2BEqual = assertCommandB2BEqual
+
+
 
 
 #vim: noet sw=4 ts=4

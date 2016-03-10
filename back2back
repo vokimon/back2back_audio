@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+from yamlns import namespace as ns
+from b2btest import runBack2BackProgram
+import sys
+
+testcases = ns.load("example.yaml")
+runBack2BackProgram(testcases.datapath, sys.argv, [
+	( name, testcase.command, testcase.outputs)
+	for name, testcase in testcases.testcases.items()
+])
+
+

@@ -86,8 +86,8 @@ if __name__ == '__main__':
 ```
 
 
-Back2Back testing of programs
------------------------------
+Back2Back testing of cli programs
+---------------------------------
 
 A b2b test is a python script which defines a set of tests.
 For each test you want to run, you need to define:

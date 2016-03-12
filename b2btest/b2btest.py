@@ -223,8 +223,8 @@ def assertProgramOutputsB2B(self, command, *outputs, **kwd):
 
 
 def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
-
-	"--help" not in sys.argv or fail(help, 0)
+	print (argv)
+	"--help" not in argv or fail(help, 0)
 
 	architectureSpecific = "--arch" in argv
 	if architectureSpecific : argv.remove("--arch")

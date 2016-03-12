@@ -130,17 +130,22 @@ testcases:
     - /tmp/sine.wav
 ```
 
-Name it b2bcases.yaml and run
+To list the available test cases:
+
+```bash
+back2back b2bcases.yaml --list
+```
+
+To run them:
 
 ```bash
 back2back b2bcases.yaml
 ```
 
-To list the test cases:
-
-```bash
-back2back b2bcases.yaml --list
-```
+The first time you run a test case, it will fail as there is no
+expectation, you must to check it is valid and accept it.
+Successive failures means that the behaviour has change.
+You can accept the new result if the behavioural change is expected.
 
 To accept a concrete case:
 
@@ -153,10 +158,6 @@ To accept all failing tests:
 ```bash
 back2back b2bcases.yaml --acceptall
 ```
-
-The first time you run a test case, it will generate a result file.
-To turn it into an acceptation you must to accept it after ensuring
-the result is correct.
 
 If some output depends on the computer architecture or in the platform (windows, mac...)
 use the `--arch` and `--platform` options when accepting.

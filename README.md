@@ -170,13 +170,13 @@ back2back b2bcases.yaml --accept HelloWorld --arch
 Old inteface
 ------------
 
-```python
 If you want to generate the test cases progamaticaly,
 you still are able to use the old python interface.
 Instead of a yaml file, write python script like this:
 
-Just like in this b2b script:
+Just like in this b2b script does:
 
+```python
 	#!/usr/bin/python
 	import sys
 	from b2btest import runBack2BackProgram

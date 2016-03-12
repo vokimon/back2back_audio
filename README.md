@@ -60,6 +60,53 @@ Features:
 * Comparators and diff generators can be added for your own file type.
 * Allows to specify architecture dependant outputs for the same test.
 
+
+How to install
+--------------
+
+pip install b2btest
+
+Dependencies
+------------
+
+B2b for audio files requires the [wavefile] module:
+Which in turn requires having [libsndfile] library installed.
+
+[wavefile]: https://github.com/vokimon/python-wavefile
+[libsndfile]: http://www.mega-nerd.com/libsndfile/
+
+Command line invocation
+-----------------------
+
+To run the tests
+
+```bash
+$ back2back b2bcases.yaml
+```
+
+To list the test cases
+
+```bash
+$ back2back b2bcases.yaml
+```
+
+Python
+
+
+Change log
+----------
+
+### 1.5
+
+- Unit test like usage for back-to-back test Python code instead of command line programs.
+- New commandline tool `back2back` that takes a yaml file with the test cases definitions.
+
+### 1.4
+
+- First github version
+- (There were previous unpublished versions)
+
+
 Back2Back testing in your unittest
 ----------------------------------
 
@@ -89,11 +136,74 @@ if __name__ == '__main__':
 Back2Back testing of cli programs
 ---------------------------------
 
-A b2b test is a python script which defines a set of tests.
-For each test you want to run, you need to define:
-* A name
-* A command line
-* A set of output files to check
+When you are testing back-to-back the output of a command line,
+you define a yaml file like this (name it b2bcases.yaml).
+
+```yaml
+#!/usr/bin/env back2back 
+
+datapath: "b2bdata" # Point it to the directory containing your reference data
+testcases:
+
+  HelloWorld:
+    command: echo Hello World > output.txt
+    outputs:
+    - output.txt
+
+  AlwaysChanging:
+    command: date > output.txt
+    outputs:
+    - output.txt
+
+  Generate1KHzSine:
+    command: sox -n /tmp/sine.wav synth 1.0 sine  1000.0
+    outputs:
+    - /tmp/sine.wav
+```
+
+Name it b2bcases.yaml and run
+
+```bash
+back2back b2bcases.yaml
+```
+
+To list the test cases:
+
+```bash
+back2back b2bcases.yaml --list
+```
+
+To accept a concrete case:
+
+```bash
+back2back b2bcases.yaml --accept HelloWorld
+```
+
+To accept all failing tests:
+
+```bash
+back2back b2bcases.yaml --acceptall
+```
+
+The first time you run a test case, it will generate a result file.
+To turn it into an acceptation you must to accept it after ensuring
+the result is correct.
+
+If some output depends on the computer architecture or in the platform (windows, mac...)
+use the `--arch` and `--platform` options when accepting.
+It will generate an independent expectation file for such architecture or platform.
+
+```bash
+back2back b2bcases.yaml --accept HelloWorld --arch
+```
+
+Old inteface
+------------
+
+```python
+If you want to generate the test cases progamaticaly,
+you still are able to use the old python interface.
+Instead of a yaml file, write python script like this:
 
 Just like in this b2b script:
 
@@ -116,46 +226,13 @@ Just like in this b2b script:
 				]),
 		]
 	runBack2BackProgram(data_path, sys.argv, back2BackTests)
+```
 
-Save this file as `back2back`, for example, and make it executable.
+Save this file as `back2back.py`, for example, and make it executable.
 
-To run the tests call this script without parameters.
+Use the python script directly with the same command line
+but without the yaml file.
 
-	./back2back
-
-Failed cases will generate `*_result.wav` and `*_diff.wav`
-files for each mismatching output, containing the
-obtained output and the difference with the expected one.
-
-If some test fail but you want to accept the new results
-just call:
-
-	./back2back --accept case1 case2
-
-where `case1` and `case2` are the cases to be accepted.
-
-To know which are the available cases:
-
-	./back2back --list
-
-To accept any failing cases (USE IT WITH CARE) call:
-
-	./back2back --acceptall
-
-To accept some results but just for a given architecture,
-due to floating point mismatches, use:
-
-	./back2back --arch --accept case1 case2
-
-
-Dependencies
-------------
-
-B2b for audio files requires the [wavefile] module:
-Which in turn requires having [libsndfile] library installed.
-
-[wavefile]: https://github.com/vokimon/python-wavefile
-[libsndfile]: http://www.mega-nerd.com/libsndfile/
 
 
 Extra advices

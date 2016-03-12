@@ -116,7 +116,7 @@ def passB2BTest(datapath, case, command, outputs):
 			os.system('cp %s %s' % (output, badResultName(base,extension)) )
 			failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
 		removeIfExists(output)
-		return failures
+	return failures
 
 def passB2BTests(datapath, back2BackCases) :
 	failedCases = []

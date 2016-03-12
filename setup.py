@@ -16,7 +16,7 @@ and managing the aceptance of new references.
 
 setup(
 	name = "b2btest",
-	version = "1.1",
+	version = "1.2~git",
 	requires=[
         'wavefile',
         'consolemsg',

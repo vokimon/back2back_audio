@@ -228,6 +228,10 @@ until you fix it. But don't forget.
 Change log
 ----------
 
+### 1.2
+
+- CLI: Fix: only the first output was actually checked
+
 ### 1.1
 
 - Unit test like usage for back-to-back test Python code instead of command line programs.

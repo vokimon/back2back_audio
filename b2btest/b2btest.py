@@ -223,7 +223,7 @@ def assertProgramOutputsB2B(self, command, *outputs, **kwd):
 
 
 def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
-	print (argv)
+
 	"--help" not in argv or fail(help, 0)
 
 	architectureSpecific = "--arch" in argv

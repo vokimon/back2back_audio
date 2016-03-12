@@ -75,37 +75,6 @@ Which in turn requires having [libsndfile] library installed.
 [wavefile]: https://github.com/vokimon/python-wavefile
 [libsndfile]: http://www.mega-nerd.com/libsndfile/
 
-Command line invocation
------------------------
-
-To run the tests
-
-```bash
-$ back2back b2bcases.yaml
-```
-
-To list the test cases
-
-```bash
-$ back2back b2bcases.yaml
-```
-
-Python
-
-
-Change log
-----------
-
-### 1.5
-
-- Unit test like usage for back-to-back test Python code instead of command line programs.
-- New commandline tool `back2back` that takes a yaml file with the test cases definitions.
-
-### 1.4
-
-- First github version
-- (There were previous unpublished versions)
-
 
 Back2Back testing in your unittest
 ----------------------------------
@@ -255,6 +224,18 @@ control system dare to accept wrong expectation data
 until you fix it. But don't forget.
 
 
+Change log
+----------
+
+### 1.1
+
+- Unit test like usage for back-to-back test Python code instead of command line programs.
+- New commandline tool `back2back` that takes a yaml file with the test cases definitions.
+
+### 1.0
+
+- First github version
+- (There were previous unpublished versions)
 
 
 

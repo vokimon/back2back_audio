@@ -165,62 +165,6 @@ def _caseList(cases) :
 	return "".join(["\t"+case+"\n" for case in cases])
 
 
-def makeB2bTestCase(testCaseName, id) :
-	def b2bTestCase(self):
-		self.maxDiff = None
-		resultFilename = os.path.join('b2bdata',testCaseName+'-result.html')
-		expectedFilename = os.path.join('b2bdata',testCaseName+'-expected.html')
-		if os.access(resultFilename, os.R_OK) :
-			os.unlink(resultFilename)
-
-		output = renderMako(self.fixture.template, self.fixture.model, id)
-
-		try:
-			with codecs.open(expectedFilename,'r', 'utf8') as expectedfile:
-				expected = expectedfile.read()
-		except:
-			expected = None
-
-		if expected != output :
-			with codecs.open(resultFilename,'w', 'utf8') as outputfile:
-				outputfile.write(output)
-
-		if expected is None :
-			self.fail(
-				"No expectation for the testMethod, use the 'accept' "
-				"subcommand to accept the current result as good '{}'"
-				.format(resultFilename))
-
-		self.assertMultiLineEqual(expected, output,
-			"B2B data missmatch, use the 'accept' "
-			"subcommand to accept the current result as good '{}'"
-			.format(resultFilename))
-
-	return b2bTestCase
-
-
-def addDataDrivenTestCases():
-	for testCase, fixture in testcases.items() :
-		klassname = 'Test_B2B_{0}'.format(testCase)
-		# Dynamically create a TestCase Subclass with all the test
-		testMethods = dict([
-			('test_{0}'.format(testMethod),
-				makeB2bTestCase(
-					testCase+'.'+testMethod, data))
-			for testMethod, data in fixture.cases.items()
-			]+[
-				('longMessage', True),
-				('fixture', fixture),
-			])
-
-		globals()[klassname] = type( klassname, (unittest.TestCase,), testMethods)
-
-#addDataDrivenTestCases()
-
-def assertProgramOutputsB2B(self, command, *outputs, **kwd):
-	"""Runs the command and asserts the outputs are equal to the expected ones."""
-	# TODO
-
 
 def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 
@@ -327,37 +271,6 @@ def assertCommandB2BEqual(self, command, *outputs):
 			.format(commandError, command))
 
 	return
-	step("Test: %s Command: '%s'"%(case,command))
-	for output in outputs :
-		removeIfExists(output)
-	try :
-		commandError = subprocess.call(command, shell=True)
-		if commandError :
-			return ["Command failed with return code %i:\n'%s'"%(commandError,command)]
-	except OSError as e :
-		return ["Unable to run command: '%s'"%(command)]
-	failures = []
-	for output in outputs :
-		extension = os.path.splitext(output)[-1]
-		base = prefix(datapath, case, output)
-		expected = expectedName(base, extension)
-		diffbase = diffBaseName(base)
-		difference = diff_files(expected, output, diffbase)
-		#diffbase = diffbase+'.wav'
-		diffbase = diffbase + extension
-
-		if not difference:
-			printcolor('32;1', " Passed")
-			removeIfExists(diffbase)
-			removeIfExists(diffbase+'.png')
-			removeIfExists(badResultName(base,extension))
-		else:
-			printcolor('31;1', " Failed")
-			os.system('cp %s %s' % (output, badResultName(base,extension)) )
-			failures.append("Output '%s':\n%s"%(
-				base, '\n'.join(['\t- %s'%item for item in difference])))
-		removeIfExists(output)
-		return failures
 
 
 import unittest

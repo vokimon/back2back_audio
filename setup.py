@@ -39,5 +39,11 @@ setup(
 		'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
 		'Operating System :: OS Independent',
 	],
+	entry_points={
+		'back2back.diff': [
+			'text=b2btest.difftext:differences',
+			'audio=b2btest.diffaudio:differences',
+			]
+	},
 	)
 

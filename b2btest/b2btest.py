@@ -5,15 +5,29 @@ from consolemsg import step, fail, success, error, warn, printStdError, color
 def printcolor(colorcode, message):
 	printStdError(color(colorcode, message))
 
-from . import diffaudio
-from . import difftext
-diff_for_type = {
-	".wav" : diffaudio.differences,
-	".txt" : difftext.differences,
-	".clamnetwork" : difftext.differences,
-	".xml" : difftext.differences,
-	".ttl" : difftext.differences,
-}
+def diffbyextension(expected, result, diffbase):
+	self = diffbyextension
+	if not hasattr(self, 'methods'):
+		from pkg_resources import iter_entry_points
+		self.methods = dict((
+			(entryPoint.name, entryPoint.load())
+			for entryPoint in iter_entry_points(
+				group='back2back.diff',
+				name=None,
+				)
+			))
+	extensionMap = {
+		".wav" : self.methods['audio'],
+		".txt" : self.methods['text'],
+		".clamnetwork" : self.methods['text'],
+		".xml" : self.methods['text'],
+		".ttl" : self.methods['text'],
+	}
+
+	extension = os.path.splitext(result)[-1]
+	diff = extensionMap.get(extension, self.methods['text'])
+	return diff(expected, result, diffbase)
+
 
 try:
     FileNotFoundError
@@ -29,10 +43,8 @@ def diff_files(expected, result, diffbase) :
 		error("Expectation file not found for: {}".format(result))
 		return ["No expectation for the output. First run? "
 			"Check the results and accept them with the --accept option."]
-	extension = os.path.splitext(result)[-1]
 
-	diff = diff_for_type.get(extension, difftext.differences)
-	return diff(expected, result, diffbase)
+	return diffbyextension(expected, result, diffbase)
 
 
 def archSuffix() :
@@ -269,7 +281,6 @@ def assertCommandB2BEqual(self, command, *outputs):
 	if commandError:
 		self.fail("Command failed with return code {}:\n'{}'"
 			.format(commandError, command))
-
 	return
 
 

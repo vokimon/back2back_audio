@@ -248,6 +248,7 @@ Change log
 - Plugin based type sensitive diff
 - Specific diff for XML
 - XML and Audio diffing now are extras
+- 'extensions' key in yaml testcases to associate custom file extensions to a diff plugin
 
 ### 1.1
 

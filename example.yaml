@@ -13,6 +13,11 @@ testcases:
     outputs:
     - output.txt
 
+  AlwaysChangingXML:
+    command: echo '<document date="'$(date)'"></document>' > output.xml
+    outputs:
+    - output.xml
+
   Generate1KHzSine:
     command: sox -n /tmp/sine.wav synth 1.0 sine  1000.0
     outputs:

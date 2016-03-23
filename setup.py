@@ -19,6 +19,7 @@ setup(
 	version = "1.2~git",
 	requires=[
         'wavefile',
+		'lxml',
         'consolemsg',
         ],
 	description = "Light framework to setup back-to-back test scripts",
@@ -43,6 +44,7 @@ setup(
 		'back2back.diff': [
 			'text=b2btest.difftext:differences',
 			'audio=b2btest.diffaudio:differences',
+			'xml=b2btest.diffxml:differences',
 			]
 	},
 	)

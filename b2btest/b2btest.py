@@ -19,8 +19,8 @@ def diffbyextension(expected, result, diffbase):
 	extensionMap = {
 		".wav" : self.methods['audio'],
 		".txt" : self.methods['text'],
-		".clamnetwork" : self.methods['text'],
-		".xml" : self.methods['text'],
+		".clamnetwork" : self.methods['xml'],
+		".xml" : self.methods['xml'],
 		".ttl" : self.methods['text'],
 	}
 

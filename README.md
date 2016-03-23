@@ -245,6 +245,9 @@ Change log
 ### 1.2
 
 - CLI: Fix: only the first output was actually checked
+- Plugin based type sensitive diff
+- Specific diff for XML
+- XML and Audio diffing now are extras
 
 ### 1.1
 

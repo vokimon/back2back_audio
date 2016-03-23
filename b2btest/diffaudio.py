@@ -19,13 +19,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-extensions = [
-	'wav',
-	'ogg',
-	'flac',
-	'voc',
-	'au',
-]
 
 def differences(expected, result, diffBase=None) :
 	import wavefile
@@ -149,6 +142,14 @@ def differences(expected, result, diffBase=None) :
 
 			return errors
 
+differences.extensions = [
+	'.wav',
+	'.ogg',
+	'.flac',
+	'.voc',
+	'.au',
+]
+
 def hopMax(channels, offset=0) :
 	"""Returns values and positions of absolute maximi
 	for each channel of a multichannel audio chunk.
@@ -183,7 +184,6 @@ def cummulativeCompare(values, pos, diff, offset) :
 	newvalues, newpos = hopMax(diff, offset)
 	values, pos = mergeHopMax(values, pos, newvalues, newpos)
 	return values, pos
-
 
 
 if __name__ == '__main__' :

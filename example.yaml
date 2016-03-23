@@ -2,9 +2,7 @@
 
 datapath: "data" # Point it to the directory containing your reference data
 extensions:
-  .xml: xml
-  .wav: audio
-  .ogg: audio
+  .weird: xml
 testcases:
 
   HelloWorld:
@@ -26,6 +24,11 @@ testcases:
     command: echo '<document date="'$(date)'"></document>' > output.xml
     outputs:
     - output.xml
+
+  WeirdExtension:
+    command: echo '<document date="'$(date)'"></document>' > output.weird
+    outputs:
+    - output.weird
 
   Generate1KHzSine:
     command: sox -n /tmp/sine.wav synth 1.0 sine  1000.0

@@ -30,4 +30,8 @@ def differences(expected, result, diffbase):
 		result = e.args
 	return result
 
+differences.extensions = [
+	'.xml',
+	]
+
 

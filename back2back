@@ -85,6 +85,6 @@ testcases = ns.load(args.yamlfile)
 runBack2BackProgram(testcases.datapath, subargs, [
 	( name, testcase.command, testcase.outputs)
 	for name, testcase in testcases.testcases.items()
-])
+], extensions=testcases.get('extensions',{}))
 
 

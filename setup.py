@@ -18,10 +18,16 @@ setup(
 	name = "b2btest",
 	version = "1.2~git",
 	requires=[
-        'wavefile',
-		'lxml',
         'consolemsg',
         ],
+	extras_require= dict(
+		audio=[
+			'wavefile',
+			],
+		xml=[
+			'lxml',
+			],
+		),
 	description = "Light framework to setup back-to-back test scripts",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",
@@ -39,13 +45,13 @@ setup(
 		'Development Status :: 5 - Production/Stable',
 		'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
 		'Operating System :: OS Independent',
-	],
+		],
 	entry_points={
 		'back2back.diff': [
 			'text=b2btest.difftext:differences',
-			'audio=b2btest.diffaudio:differences',
-			'xml=b2btest.diffxml:differences',
+			'audio=b2btest.diffaudio:differences [audio]',
+			'xml=b2btest.diffxml:differences [xml]',
 			]
-	},
+		},
 	)
 

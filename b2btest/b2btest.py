@@ -5,7 +5,47 @@ from consolemsg import step, fail, success, error, warn, printStdError, color
 def printcolor(colorcode, message):
 	printStdError(color(colorcode, message))
 
+class Differ(object):
+	from pkg_resources import iter_entry_points
+	methods = dict((
+		(entryPoint.name, entryPoint.load())
+		for entryPoint in iter_entry_points(
+			group='back2back.diff',
+			name=None,
+			)
+		))
+	extensions=None
+
+	@classmethod
+	def _fillExtensions(cls):
+		if cls.extensions is not None: return
+		cls.extensions = {}
+		for name, typediffer in cls.methods.items():
+			if not hasattr(typediffer, 'extensions'):
+				continue
+			cls.extensions.update((
+				(extension, typediffer)
+				for extension in typediffer.extensions
+			))
+
+	@classmethod
+	def extraExtensions(cls, extensions):
+		cls._fillExtensions()
+		cls.extensions.update((
+			(extension, cls.methods[pluginname])
+			for extension, pluginname in extensions.items()
+			))
+
+	@classmethod
+	def diff(cls, expected, result, diffbase):
+		cls._fillExtensions()
+		extension = os.path.splitext(result)[-1]
+		diff = cls.extensions.get(extension, cls.methods['text'])
+		return diff(expected, result, diffbase)
+
+
 def diffbyextension(expected, result, diffbase):
+	return Differ.diff(expected, result, diffbase)
 	self = diffbyextension
 	if not hasattr(self, 'methods'):
 		from pkg_resources import iter_entry_points
@@ -131,7 +171,9 @@ def passB2BTest(datapath, case, command, outputs):
 		removeIfExists(output)
 	return failures
 
-def passB2BTests(datapath, back2BackCases) :
+def passB2BTests(datapath, back2BackCases, extensions) :
+	Differ.extraExtensions(extensions)
+		
 	failedCases = []
 	for case, command, outputs in back2BackCases :
 		failures = passB2BTest(datapath, case, command, outputs)
@@ -179,7 +221,7 @@ def _caseList(cases) :
 
 
 
-def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
+def runBack2BackProgram(datapath, argv, back2BackCases, help=help, extensions={}) :
 
 	"--help" not in argv or fail(help, 0)
 
@@ -219,7 +261,7 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help) :
 		accept(datapath, back2BackCases, architectureSpecific)
 		sys.exit()
 
-	passB2BTests(datapath, back2BackCases) or fail("Tests not passed")
+	passB2BTests(datapath, back2BackCases, extensions=extensions) or fail("Tests not passed")
 
 
 def assertB2BEqual(self, result, expectedFile=None, resultFile=None):

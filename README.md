@@ -64,7 +64,14 @@ Features:
 How to install
 --------------
 
-pip install b2btest
+Just use:
+
+ pip install b2btest
+
+In order to get the by extension diffs:
+
+ pip install b2btest[audio,xml]
+
 
 Dependencies
 ------------
@@ -74,6 +81,13 @@ Which in turn requires having [libsndfile] library installed.
 
 [wavefile]: https://github.com/vokimon/python-wavefile
 [libsndfile]: http://www.mega-nerd.com/libsndfile/
+
+For xml files, it requires [lxml] module and both
+[libxml2] and [libxslt] libraries installed
+
+[lxml]: http://lxml.de/
+[libxml2]: http://xmlsoft.org/downloads.html
+[libxslt]: http://xmlsoft.org/XSLT/
 
 
 Back2Back testing in your unittest

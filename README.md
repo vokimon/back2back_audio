@@ -47,6 +47,9 @@ related task such as setting up, verifying results,
 accepting changes, clearing data...
 
 Features:
+* You can put under back2back testing either
+  - the outcomes (files) of any shell command line (with pipes and so on), or
+  - any serializable data in a `unittest.TestCase` method
 * It is auto-checked, like most Xunit frameworks
 * It automagically manages the expectation data
 * On failure, it generates handy data to evaluate
@@ -56,9 +59,8 @@ Features:
   results as proper ones.
 * When the test turns green or it is accepted all 
   failure related data gets cleared.
-* The SUT can be any shell command line (with pipes, sequences...)
 * Comparators and diff generators can be added for your own file type.
-* Allows to specify architecture dependant outputs for the same test.
+* You can set architecture dependant outputs for the same test.
 
 
 How to install

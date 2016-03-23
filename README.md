@@ -66,12 +66,15 @@ How to install
 
 Just use:
 
- pip install b2btest
+```bash
+$ pip install b2btest
+```
 
 In order to get the by extension diffs:
 
- pip install b2btest[audio,xml]
-
+```bash
+$ pip install b2btest[audio,xml]
+```
 
 Dependencies
 ------------

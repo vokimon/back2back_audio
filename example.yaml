@@ -1,6 +1,10 @@
 #!/usr/bin/env back2back 
 
 datapath: "data" # Point it to the directory containing your reference data
+extensions:
+  .xml: xml
+  .wav: audio
+  .ogg: audio
 testcases:
 
   HelloWorld:
@@ -12,6 +16,11 @@ testcases:
     command: date > output.txt
     outputs:
     - output.txt
+
+  Xml:
+    command: echo '<document>Hello</document>' > output.xml
+    outputs:
+    - output.xml
 
   AlwaysChangingXML:
     command: echo '<document date="'$(date)'"></document>' > output.xml

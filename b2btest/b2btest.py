@@ -126,7 +126,8 @@ def passB2BTest(datapath, case, command, outputs):
 		else:
 			printcolor('31;1', " Failed")
 			os.system('cp %s %s' % (output, badResultName(base,extension)) )
-			failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in difference])))
+			formatted = [ '\n\t  '.join(item.split('\n')) for item in difference]
+			failures.append("Output '%s':\n%s"%(base, '\n'.join(['\t- %s'%item for item in formatted])))
 		removeIfExists(output)
 	return failures
 

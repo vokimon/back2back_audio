@@ -227,13 +227,18 @@ but without the yaml file.
 Extra advices
 -------------
 
+### Use continuous integration
+
 Put your tests under a continuous integration system such
+* Travis-CI
 * BuildBot
 * TestFarm
 * CDash
 
 You might be lazy passing tests but bots aren't.
 Connect your bots to your VCS so they test for every commit.
+
+### Keep your expectations up to date
 
 If one b2b test gets red, don't keep it for long,
 either accept it or roll-back your code.

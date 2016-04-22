@@ -17,7 +17,7 @@ and managing the aceptance of new references.
 setup(
 	name = "b2btest",
 	version = "1.2",
-	requires=[
+	install_requires=[
         'consolemsg',
         ],
 	extras_require= dict(

@@ -266,16 +266,25 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help, extensions={}
 
 def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 
+	try:
+		result.decode
+	except AttributeError:
+		pass
+	else:
+		result = result.decode('utf8')
+
 	def safeRemove(filename):
 		try: os.unlink(filename)
 		except: pass
 
 	def read(filename):
-		with open(filename) as f:
+		import io
+		with io.open(filename) as f:
 			return f.read()
 
 	def write(filename, content):
-		with open(filename,'w') as f:
+		import io
+		with io.open(filename,'w') as f:
 			f.write(content)
 
 	if resultFile is None:

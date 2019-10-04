@@ -252,6 +252,12 @@ until you fix it. But don't forget.
 Change log
 ----------
 
+### 1.3
+
+- Avoid larg diffs by telling just the generated file with the failed results
+- Fix unicode problems in certain python versions
+- Using older lxml versions for python<3.5
+
 ### 1.2
 
 - CLI: Fix: only the first output was actually checked

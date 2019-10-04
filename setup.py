@@ -16,7 +16,7 @@ and managing the aceptance of new references.
 
 setup(
 	name = "b2btest",
-	version = "1.2",
+	version = "1.3",
 	install_requires=[
 		'consolemsg',
 		'pathlib2;python_version<"3.5"',

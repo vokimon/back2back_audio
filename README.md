@@ -260,6 +260,10 @@ until you fix it. But don't forget.
 Change log
 ----------
 
+### 1.3.1
+
+- Updated README
+
 ### 1.3
 
 - Avoid larg diffs by telling just the generated file with the failed results

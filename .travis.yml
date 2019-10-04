@@ -2,10 +2,9 @@ language: python
 python:
 #- "2.6" # assertRaises as context manager
 - "2.7"
-#- "3.2" # unicode literals
-- "3.3"
 - "3.4"
 - "3.5"
+- "3.7"
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y libsndfile1

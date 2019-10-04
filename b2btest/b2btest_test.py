@@ -83,10 +83,8 @@ class B2BTest_Test(unittest.TestCase):
 			self.assertB2BEqual('differentData')
 
 		self.assertEqual(ass.exception.args[0],
-			"'differentData' != 'data'\n"
-			"- differentData\n"
-			"+ data\n"
-			"")
+			"Differing content: '{}'".format(self.resultFile())
+			)
 
 		self.assertExpectedEquals('data')
 		self.assertResultEquals('differentData')

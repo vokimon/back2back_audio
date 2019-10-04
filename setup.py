@@ -18,12 +18,13 @@ setup(
 	name = "b2btest",
 	version = "1.2",
 	install_requires=[
-        'consolemsg',
-        ],
+		'consolemsg',
+		'pathlib2;python_version<"3.4"',
+		],
 	extras_require= dict(
 		audio=[
 			'wavefile',
-			],
+		],
 		xml=[
 			'lxml<4.4.0;python_version<"3.5"',
 			'lxml;python_version>="3.5"',

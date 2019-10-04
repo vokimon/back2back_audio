@@ -14,7 +14,9 @@ processing algorithms by comparing audio files but now
 it is extended to many other kind of files, like plain
 text and xml. Other formats can be added by extensions.
 
-[TOC]
+* auto-gen TOC:
+{:toc}
+
 
 Why back-to-back testing
 ------------------------

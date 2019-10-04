@@ -320,11 +320,10 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 			.format(resultFile))
 
 	try:
-		self.assertMultiLineEqual(result, expectation,
-            "Differing content: '{}'".format(resultFile))
+		self.assertEqual(result, expectation)
 	except AssertionError:
 		writeResultsOrAccept()
-		raise
+		raise AssertionError("Differing content: '{}'".format(resultFile))
 
 	safeRemove(resultFile)
 

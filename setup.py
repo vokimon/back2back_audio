@@ -1,18 +1,8 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
+from io import open
 
-readme = """\
-This software is helpfull to prepare and manage a set
-of back2back test scripts over any piece of software
-that can be called and controlled by command line and
-produces output files that can be compared against
-some other reference files.
-
-You can define the tests in a simple Python script,
-and the framework will help you initializing the
-reference data, spotting differences with results,
-and managing the aceptance of new references.
-"""
+readme = open('README.rst', encoding='utf8').read()
 
 setup(
 	name = "b2btest",
@@ -30,7 +20,7 @@ setup(
 			'lxml;python_version>="3.5"',
 		],
 	),
-	description = "Light framework to setup back-to-back test scripts",
+	description = "Light framework to setup back-to-back test",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",
 	url = 'https://github.com/vokimon/back2back',

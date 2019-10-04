@@ -25,9 +25,10 @@ setup(
 			'wavefile',
 			],
 		xml=[
-			'lxml',
-			],
-		),
+			'lxml<4.4.0;python_version<"3.5"',
+			'lxml;python_version>="3.5"',
+		],
+	),
 	description = "Light framework to setup back-to-back test scripts",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",

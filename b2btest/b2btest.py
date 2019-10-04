@@ -1,7 +1,8 @@
 import os, sys, string
 import subprocess
 from consolemsg import step, fail, success, error, warn, printStdError, color, u
-from pathlib2 import Path
+try: from pathlib import Path
+except ImportError: from pathlib2 import Path
 
 def printcolor(colorcode, message):
 	printStdError(color(colorcode, message))

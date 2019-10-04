@@ -19,7 +19,7 @@ setup(
 	version = "1.2",
 	install_requires=[
 		'consolemsg',
-		'pathlib2;python_version<"3.4"',
+		'pathlib2;python_version<"3.5"',
 		],
 	extras_require= dict(
 		audio=[

@@ -3,16 +3,25 @@ b2btest - Light framework to setup back-to-back test scripts
 
 [![Build Status](https://travis-ci.org/vokimon/back2back.svg?branch=master)](https://travis-ci.org/vokimon/back2back)
 
-This software is helpfull to prepare and manage a set 
-of back2back test scripts over any piece of software 
-that can be called and controlled by command line and
-produces output files that can be compared against
-some other reference files.
+This package is helpfull to prepare and manage
+back-to-back tests to get control over software
+you don't have proper tests yet.
 
-They were initially developed to do b2b tests on audio
-processing algorithms by comparing audio files but now 
-it is extended to many other kind of files, like plain
-text and xml. Other formats can be added by extensions.
+On one side, it includes `back2back`, a comand line tool
+that performs back-to-back tests on any software
+that can be called by command line and produces
+some output files you want to get warned when they get different.
+You can define the set of commands and the outputs to watch in a simple
+YAML file.
+
+On the other side, it includes comparision functions
+and python-unittests like asserts you can use within
+your test suites that perform similar workflows, keeping
+the reference outputs in a folder and named by the testname.
+
+Both the command line tool and the python libraries,
+are extendable with plugins to get informative diff for several
+file formats: audio, xml, text, pdf...
 
 
 Why back-to-back testing

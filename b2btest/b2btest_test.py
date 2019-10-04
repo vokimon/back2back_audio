@@ -77,7 +77,7 @@ class B2BTest_Test(unittest.TestCase):
 
 		self.assertExpectedEquals('data')
 
-	def test_assertB2BEqual_differentResult_generatesExpectationAndFails(self):
+	def test_assertB2BEqual_differentResult_generatesExpectationAndFails_hitravis(self):
 		self.setExpected('data')
 		with self.assertRaises(AssertionError) as ass:
 			self.assertB2BEqual('differentData')

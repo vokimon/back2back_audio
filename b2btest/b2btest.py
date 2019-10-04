@@ -1,6 +1,7 @@
 import os, sys, string
 import subprocess
-from consolemsg import step, fail, success, error, warn, printStdError, color
+from consolemsg import step, fail, success, error, warn, printStdError, color, u
+from pathlib2 import Path
 
 def printcolor(colorcode, message):
 	printStdError(color(colorcode, message))
@@ -70,9 +71,9 @@ def diffbyextension(expected, result, diffbase):
 
 
 try:
-    FileNotFoundError
+	FileNotFoundError
 except NameError:
-    FileNotFoundError=IOError
+	FileNotFoundError=IOError
 
 
 def diff_files(expected, result, diffbase) :
@@ -266,41 +267,18 @@ def runBack2BackProgram(datapath, argv, back2BackCases, help=help, extensions={}
 
 def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 
-	try:
-		result.decode
-	except AttributeError:
-		pass
-	else:
-		result = result.decode('utf8')
-
 	def safeRemove(filename):
-		try: os.unlink(filename)
+		try: Path(filename).unlink()
 		except: pass
 
+	def makedirs(dirname):
+		Path(dirname).mkdir(parents=True, exist_ok=True)
+
 	def read(filename):
-		import io
-		with io.open(filename) as f:
-			return f.read()
+		return Path(filename).read_text(encoding='utf8')
 
 	def write(filename, content):
-		import io
-		with io.open(filename,'w') as f:
-			f.write(content)
-
-	if resultFile is None:
-		try: os.makedirs(self.b2bdatapath)
-		except OSError: pass
-		resultFile = os.path.join(
-			self.b2bdatapath,
-			self.id()+"-result",
-			)
-	if expectedFile is None:
-		try: os.makedirs(self.b2bdatapath)
-		except OSError: pass
-		expectedFile = os.path.join(
-			self.b2bdatapath,
-			self.id()+"-expected",
-			)
+		return Path(filename).write_text(content,encoding='utf8')
 
 	def writeResultsOrAccept():
 		accepting = hasattr(self, 'acceptMode') and self.acceptMode
@@ -311,6 +289,17 @@ def assertB2BEqual(self, result, expectedFile=None, resultFile=None):
 		safeRemove(resultFile)
 		raise Warning("Accepting new data for '{}'"
 			.format(expectedFile))
+
+	b2bdatapath = Path(self.b2bdatapath)
+
+	result = u(result)
+
+	if resultFile is None:
+		makedirs(b2bdatapath)
+		resultFile = b2bdatapath / (self.id()+"-result")
+	if expectedFile is None:
+		makedirs(b2bdatapath)
+		expectedFile = b2bdatapath / (self.id()+"-expected")
 
 	try:
 		expectation = read(expectedFile)

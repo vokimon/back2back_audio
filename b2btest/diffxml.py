@@ -13,9 +13,8 @@ def assertXmlEqual(self, got, want):
 
 TestCase.assertXmlEqual = assertXmlEqual
 
-def differences(expected, result, diffbase):
+def differences(expected, result, diffbase=None):
 	extension = os.path.splitext(result)[-1]
-	difftxt = diffbase+extension
 
 	with open(expected) as f:
 		expectedContent = f.read()

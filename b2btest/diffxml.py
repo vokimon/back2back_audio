@@ -34,4 +34,12 @@ differences.extensions = [
 	'.xml',
 	]
 
+def main():
+	import sys
+	diffs = differences(*sys.argv[1:])
+	if not diffs : sys.stdout.write("Ok\n"); sys.exit(0)
+	for d in diffs :
+		print >> sys.stderr, d
+
+
 

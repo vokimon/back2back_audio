@@ -186,14 +186,17 @@ def cummulativeCompare(values, pos, diff, offset) :
 	return values, pos
 
 
-if __name__ == '__main__' :
-
+def main():
+	import sys
 	diffs = differences(*sys.argv[1:])
 	if not diffs : sys.stdout.write("Ok\n"); sys.exit(0)
 	for d in diffs :
 		print >> sys.stderr, d
 
 	sys.exit(-1)
+
+if __name__ == '__main__' :
+	main()
 
 
 

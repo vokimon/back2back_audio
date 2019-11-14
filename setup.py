@@ -27,7 +27,9 @@ setup(
 	long_description = readme,
 	license = 'GNU General Public License v3 or later (GPLv3+)',
 	test_suite = 'b2btest',
-	scripts=['back2back'],
+	scripts=[
+		'back2back'
+	],
 	packages=find_packages(exclude=['*_test']),
 	classifiers = [
 		'Programming Language :: Python',
@@ -39,6 +41,10 @@ setup(
 		'Operating System :: OS Independent',
 		],
 	entry_points={
+		'console_scripts': [
+			'diffaudio=b2btest.diffaudio:main [audio]',
+			'diffxml=b2btest.diffxml:main [xml]',
+		],
 		'back2back.diff': [
 			'text=b2btest.difftext:differences',
 			'audio=b2btest.diffaudio:differences [audio]',

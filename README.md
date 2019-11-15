@@ -262,6 +262,10 @@ until you fix it. But don't forget.
 Change log
 ----------
 
+### 1.3.3
+
+- Simplified dependency on lxml
+
 ### 1.3.2
 
 - `diffaudio` as console script

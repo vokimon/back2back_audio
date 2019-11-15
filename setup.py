@@ -17,8 +17,7 @@ setup(
 			'wavefile',
 		],
 		xml=[
-			'lxml<4.4.0;python_version<"3.5"',
-			'lxml;python_version>="3.5"',
+			'lxml',
 		],
 	),
 	description = "Light framework to setup back-to-back test",
@@ -36,6 +35,7 @@ setup(
 	classifiers = [
 		'Programming Language :: Python',
 		'Programming Language :: Python :: 2',
+		'Programming Language :: Python :: 3',
 		'Topic :: Software Development :: Libraries :: Python Modules',
 		'Intended Audience :: Developers',
 		'Development Status :: 5 - Production/Stable',

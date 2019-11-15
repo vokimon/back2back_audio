@@ -6,7 +6,7 @@ readme = open('README.md', encoding='utf8').read()
 
 setup(
 	name = "b2btest",
-	version = "1.3.1",
+	version = "1.3.2",
 	install_requires=[
 		'consolemsg',
 		'pathlib2;python_version<"3.5"',

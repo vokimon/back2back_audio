@@ -3,6 +3,7 @@ b2btest - Light framework to setup back-to-back test scripts
 
 [![Build Status](https://travis-ci.org/vokimon/back2back.svg?branch=master)](https://travis-ci.org/vokimon/back2back)
 
+![B2BLogo](icon_b2btest.png)
 This package is helpfull to prepare and manage
 back-to-back tests to get control over software
 you don't have proper tests yet.

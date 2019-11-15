@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 from io import open
 
-readme = open('README.rst', encoding='utf8').read()
+readme = open('README.md', encoding='utf8').read()
 
 setup(
 	name = "b2btest",
@@ -10,6 +10,7 @@ setup(
 	install_requires=[
 		'consolemsg',
 		'pathlib2;python_version<"3.5"',
+		'setuptools>40.5',
 		],
 	extras_require= dict(
 		audio=[
@@ -25,6 +26,7 @@ setup(
 	author_email = "voki@canvoki.net",
 	url = 'https://github.com/vokimon/back2back',
 	long_description = readme,
+	long_description_content_type = 'text/markdown',
 	license = 'GNU General Public License v3 or later (GPLv3+)',
 	test_suite = 'b2btest',
 	scripts=[

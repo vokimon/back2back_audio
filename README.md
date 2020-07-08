@@ -1,4 +1,4 @@
-2btest - Light framework to setup back-to-back test scripts
+b2btest - Light framework to setup back-to-back test scripts
 ============================================================
 
 [![Build Status](https://travis-ci.org/vokimon/back2back.svg?branch=master)](https://travis-ci.org/vokimon/back2back)

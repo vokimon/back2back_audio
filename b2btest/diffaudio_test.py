@@ -193,7 +193,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 			differences("data1.wav", "data2.wav")
 			self.fail("Exception expected.")
 		except IOError as e :
-			self.assertEquals((
+			self.assertEqual((
 				"Error opening 'data1.wav': System error.",
 				), e.args)
 
@@ -205,7 +205,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 			differences("data1.wav", "data2.wav")
 			self.fail("Exception expected.")
 		except IOError as e :
-			self.assertEquals((
+			self.assertEqual((
 				"Error opening 'data2.wav': System error.",
 				), e.args)
 
@@ -216,7 +216,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 
 		self.savewav(data[:,0:1],  "data1.wav", 44100)
 		self.savewav(data,         "data2.wav", 44100)
-		self.assertEquals([
+		self.assertEqual([
 			'Expected channels was 1 but got 2',
 			], differences("data1.wav", "data2.wav"))
 
@@ -225,7 +225,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 
 		self.savewav(data, "data1.wav", 44100)
 		self.savewav(data, "data2.wav", 48000)
-		self.assertEquals([
+		self.assertEqual([
 			'Expected samplerate was 44100 but got 48000',
 			], differences("data1.wav", "data2.wav"))
 
@@ -234,7 +234,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 
 		self.savewav(data,       "data1.wav", 44100)
 		self.savewav(data[:200], "data2.wav", 44100)
-		self.assertEquals([
+		self.assertEqual([
 			'Expected frames was 400 but got 200',
 			], differences("data1.wav", "data2.wav"))
 
@@ -243,7 +243,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 	def assertReportEqual(self, data1, data2, expectedMessages) :
 		self.savewav(data1, "data1.wav", 44100)
 		self.savewav(data2, "data2.wav", 44100)
-		self.assertEquals(expectedMessages,
+		self.assertEqual(expectedMessages,
 			differences("data1.wav", "data2.wav"))
 
 	# No differences

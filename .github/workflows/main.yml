@@ -38,7 +38,7 @@ jobs:
             coveralls
       - name: Unit tests
         run: |
-          pytest --cov=b2btest b2btest
+          pytest b2btest
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
         with:

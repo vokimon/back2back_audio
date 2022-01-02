@@ -13,7 +13,7 @@ setup(
 		'pathlib2;python_version<"3.5"',
 		'wavefile',
 	],
-	description = "Audio file difference detector plugin for b2btest (back-to-back tests)",
+	description = "Audio file plugin for b2btest, a framework to test against checked outputs",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",
 	url = 'https://github.com/vokimon/back2back_audio',

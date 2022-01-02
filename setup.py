@@ -9,7 +9,7 @@ setup(
 	version = "1.4.0",
 	install_requires=[
 		'setuptools>40.5',
-		'b2btest',
+		'b2btest>=1.4',
 		'pathlib2;python_version<"3.5"',
 		'wavefile',
 	],

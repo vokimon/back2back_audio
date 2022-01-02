@@ -6,7 +6,7 @@ readme = open('README.md', encoding='utf8').read()
 
 setup(
 	name = "b2btest_audio",
-	version = "2.0.0",
+	version = "1.4.0",
 	install_requires=[
 		'setuptools>40.5',
 		'b2btest',

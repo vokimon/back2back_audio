@@ -5,32 +5,22 @@ from io import open
 readme = open('README.md', encoding='utf8').read()
 
 setup(
-	name = "b2btest",
-	version = "1.3.3",
+	name = "b2btest_audio",
+	version = "2.0.0",
 	install_requires=[
-		'consolemsg',
-		'pathlib2;python_version<"3.5"',
 		'setuptools>40.5',
-		],
-	extras_require= dict(
-		audio=[
-			'wavefile',
-		],
-		xml=[
-			'lxml',
-		],
-	),
-	description = "Light framework to setup back-to-back test",
+		'b2btest',
+		'pathlib2;python_version<"3.5"',
+		'wavefile',
+	],
+	description = "Audio file difference detector plugin for b2btest (back-to-back tests)",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",
-	url = 'https://github.com/vokimon/back2back',
+	url = 'https://github.com/vokimon/back2back_audio',
 	long_description = readme,
 	long_description_content_type = 'text/markdown',
 	license = 'GNU General Public License v3 or later (GPLv3+)',
-	test_suite = 'b2btest',
-	scripts=[
-		'back2back'
-	],
+	test_suite = 'b2btest_audio',
 	packages=find_packages(exclude=['*_test']),
 	classifiers = [
 		'Programming Language :: Python',
@@ -44,13 +34,10 @@ setup(
 		],
 	entry_points={
 		'console_scripts': [
-			'diffaudio=b2btest.diffaudio:main [audio]',
-			'diffxml=b2btest.diffxml:main [xml]',
+			'diffaudio=b2btest_audio.diffaudio:main',
 		],
 		'back2back.diff': [
-			'text=b2btest.difftext:differences',
-			'audio=b2btest.diffaudio:differences [audio]',
-			'xml=b2btest.diffxml:differences [xml]',
+			'audio=b2btest_audio.diffaudio:differences',
 			]
 		},
 	)

@@ -38,7 +38,7 @@ jobs:
             coveralls
       - name: Unit tests
         run: |
-          pytest b2btest
+          pytest b2btest_audio
       - name: Coveralls
         uses: AndreMiras/coveralls-python-action@develop
         with:

@@ -14,16 +14,19 @@ b2btest is a tool to automate tests that compare results
 to some previous ones, and this plugin,
 is helpful to compare audiofiles in a sensible way.
 
-See [https://github.com/vokimon/back2back](b2btest) README
-for a deeper discussion on why you should avoid to do
-those back-to-back tests but sometimes it is the way to proceed.
+See [b2btest README](https://github.com/vokimon/back2back)
+for a deeper discussion on why you should avoid back-to-back testing,
+although sometimes it is the lesser evil way to proceed.
 
 This plugin handles audiofiles specially in several ways:
 
-- It considers two outputs to be different if the sample-by-sample difference is beyond some sound to noise ratio.
+- Instead of doing a text or byte difference, it interprets the audio contents and compares them sample by sample.
+- It considers two outputs to be different if:
+  - Metadata differs
+  - Sample-by-sample differs relative to the audio level
 - In the case of differences, it generates a diff audio by substracting both waves sample by sample.
 
-By using `python-wavefile`, it supports floating point samples, and multichannel waves.
+By means of `python-wavefile`, it supports floating point samples, and multichannel waves.
 
 How to install
 --------------
@@ -67,6 +70,10 @@ and this plugin diff will be used for them.
 
 See [b2btest] documentation on how to use this file.
 
+Command line tool
+-----------------
+
+The package also provides a `diffaudio` CLI tool to generate the audio difference
 
 
 Change log

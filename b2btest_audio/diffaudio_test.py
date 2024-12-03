@@ -62,7 +62,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		np_assert_equal( maxarg, np.array([1,3]) )
 
 	def test_hopMax_nan(self) :
-		nan=np.NaN
+		nan=np.nan
 		a1 = np.array([
 			[  1, 1],
 			[nan, 1],
@@ -117,7 +117,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 			))
 
 	def test_joinHopMax_nan(self) :
-		nan = np.NaN
+		nan = np.nan
 		np_assert_equal( mergeHopMax(
 			np.array([ 5., 5.]), np.array([ 1, 2]),
 			np.array([ 3., nan]), np.array([10,20]),
@@ -126,7 +126,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 			))
 
 	def test_joinHopMax_nan_after(self) :
-		nan = np.NaN
+		nan = np.nan
 		np_assert_equal( mergeHopMax(
 			np.array([ 3., nan]), np.array([1,2]),
 			np.array([ 5., 5.]), np.array([ 10, 20]),
@@ -286,7 +286,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 	def test_comparewaves_missingNaN(self) :
 		data1 = self.stereoSinusoids()
 		data2 = data1.copy()
-		data1[50,1] = np.NaN
+		data1[50,1] = np.nan
 
 		self.assertReportEqual(data1, data2, [
 			"Nan missmatch at channel 1, first at sample 50",
@@ -295,8 +295,8 @@ class MultiChannelDiffTests(unittest.TestCase) :
 	def test_comparewaves_expectedNaN(self) :
 		data1 = self.stereoSinusoids()
 		data2 = data1.copy()
-		data1[50,1] = np.NaN
-		data2[50,1] = np.NaN
+		data1[50,1] = np.nan
+		data2[50,1] = np.nan
 
 		self.assertReportEqual(data1, data2, [
 			])
@@ -305,7 +305,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 		# TODO: Should the missingNaN and unexpectedNaN have different messages?
 		data1 = self.stereoSinusoids()
 		data2 = data1.copy()
-		data2[50,1] = np.NaN
+		data2[50,1] = np.nan
 
 		self.assertReportEqual(data1, data2, [
 			"Nan missmatch at channel 1, first at sample 50",
@@ -314,7 +314,7 @@ class MultiChannelDiffTests(unittest.TestCase) :
 	def test_comparewaves_missingNaNNextHops(self) :
 		data1 = self.stereoSinusoids(samples=2000)
 		data2 = data1.copy()
-		data1[1025,1] = np.NaN
+		data1[1025,1] = np.nan
 
 		self.assertReportEqual(data1, data2, [
 			"Nan missmatch at channel 1, first at sample 1025",

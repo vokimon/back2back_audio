@@ -12,7 +12,7 @@ setup(
 		'b2btest>=1.4',
 		'wavefile',
 	],
-	python_requires='>=3.9'
+	python_requires='>=3.9',
 	description = "Audio file support for b2btest, a framework to test against checked outputs",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",

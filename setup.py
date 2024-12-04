@@ -10,9 +10,9 @@ setup(
 	install_requires=[
 		'setuptools>40.5',
 		'b2btest>=1.4',
-		'pathlib2;python_version<"3.5"',
 		'wavefile',
 	],
+	python_requires='>=3.9'
 	description = "Audio file plugin for b2btest, a framework to test against checked outputs",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",

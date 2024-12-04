@@ -6,9 +6,9 @@ readme = open('README.md', encoding='utf8').read()
 
 setup(
 	name = "b2btest_audio",
-	version = "1.4.1",
+	version = "1.4.2",
 	install_requires=[
-		'setuptools>40.5',
+		'setuptools>40.5', # markdown readme
 		'b2btest>=1.4',
 		'wavefile',
 	],

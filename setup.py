@@ -5,7 +5,7 @@ from io import open
 readme = open('README.md', encoding='utf8').read()
 
 setup(
-	name = "b2btest_audio",
+	name = "b2btest-audio",
 	version = "1.4.2",
 	install_requires=[
 		'setuptools>40.5', # markdown readme
@@ -13,7 +13,7 @@ setup(
 		'wavefile',
 	],
 	python_requires='>=3.9'
-	description = "Audio file plugin for b2btest, a framework to test against checked outputs",
+	description = "Audio file support for b2btest, a framework to test against checked outputs",
 	author = "David Garcia Garzon",
 	author_email = "voki@canvoki.net",
 	url = 'https://github.com/vokimon/back2back_audio',

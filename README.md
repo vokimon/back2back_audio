@@ -1,5 +1,5 @@
-b2btest audio - Audio file plugin for b2btest
-============================================================
+# b2btest audio - audio data support for back-to-back tests
+
 
 [![CI](https://github.com/vokimon/back2back_audio/actions/workflows/main.yml/badge.svg)](https://github.com/vokimon/back2back_audio/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/vokimon/back2back_audio/badge.svg?branch=master)](https://coveralls.io/github/vokimon/back2back_audio?branch=master)

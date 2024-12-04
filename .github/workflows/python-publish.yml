@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'b2btests_audio-[0-9]+\.[0-9]+\.[0-9]'
+      - 'back2back_audio-[0-9]+\.[0-9]+\.[0-9]'
 
 jobs:
   deploy:

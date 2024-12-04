@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## b2btest-audio 1.4.3 (2024-12-04)
+
+- Solve packaging problems
+
 ## b2btest-audio 1.4.2 (2024-12-04)
 
 - Dropped support for Python<3.9 (included Py2)
